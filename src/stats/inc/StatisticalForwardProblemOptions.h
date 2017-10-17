@@ -81,6 +81,15 @@ public:
   /*! It assigns the same options values from  \c src to \c this.*/
   SfpOptionsValues            (const SfpOptionsValues& src);
 
+  //! Set parameter option names to begin with prefix
+  void set_prefix(const std::string& prefix);
+
+  //! Set default values for parameter options
+  void set_defaults();
+
+  //! Given prefix, read the input file for parameters named "prefix"+*
+  void parse(const BaseEnvironment& env, const std::string& prefix);
+
   //! Destructor
   virtual ~SfpOptionsValues            ();
   //@}
@@ -109,7 +118,7 @@ public:
 
 private:
 #ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
-  BoostInputOptionsParser * m_parser;
+  ScopedPtr<BoostInputOptionsParser>::Type m_parser;
 #endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 
   // The input options as strings so we can parse the input file later

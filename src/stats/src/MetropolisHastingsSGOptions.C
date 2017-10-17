@@ -49,138 +49,18 @@ MhOptionsValues::MhOptionsValues(
 #endif
   )
   :
-    m_prefix                                           ("mh_"),
-    m_help(UQ_MH_SG_HELP),
-    m_dataOutputFileName                       (UQ_MH_SG_DATA_OUTPUT_FILE_NAME_ODV),
-    m_dataOutputAllowAll                       (UQ_MH_SG_DATA_OUTPUT_ALLOW_ALL_ODV),
-  //m_dataOutputAllowedSet                     (),
-    m_totallyMute                              (UQ_MH_SG_TOTALLY_MUTE_ODV),
-    m_initialPositionDataInputFileName         (UQ_MH_SG_INITIAL_POSITION_DATA_INPUT_FILE_NAME_ODV),
-    m_initialPositionDataInputFileType         (UQ_MH_SG_INITIAL_POSITION_DATA_INPUT_FILE_TYPE_ODV),
-    m_initialProposalCovMatrixDataInputFileName(UQ_MH_SG_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_NAME_ODV),
-    m_initialProposalCovMatrixDataInputFileType(UQ_MH_SG_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_TYPE_ODV),
-  //m_parameterDisabledSet                     (),
-    m_rawChainDataInputFileName                (UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV),
-    m_rawChainDataInputFileType                (UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_TYPE_ODV),
-    m_rawChainSize                             (UQ_MH_SG_RAW_CHAIN_SIZE_ODV),
-    m_rawChainGenerateExtra                    (UQ_MH_SG_RAW_CHAIN_GENERATE_EXTRA_ODV),
-    m_rawChainDisplayPeriod                    (UQ_MH_SG_RAW_CHAIN_DISPLAY_PERIOD_ODV),
-    m_rawChainMeasureRunTimes                  (UQ_MH_SG_RAW_CHAIN_MEASURE_RUN_TIMES_ODV),
-    m_rawChainDataOutputPeriod                 (UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_PERIOD_ODV),
-    m_rawChainDataOutputFileName               (UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV),
-    m_rawChainDataOutputFileType               (UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV),
-    m_rawChainDataOutputAllowAll               (UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_ALLOW_ALL_ODV),
-  //m_rawChainDataOutputAllowedSet             (),
-#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-    m_rawChainComputeStats                     (UQ_MH_SG_RAW_CHAIN_COMPUTE_STATS_ODV),
-#endif
-    m_filteredChainGenerate                    (UQ_MH_SG_FILTERED_CHAIN_GENERATE_ODV),
-    m_filteredChainDiscardedPortion            (UQ_MH_SG_FILTERED_CHAIN_DISCARDED_PORTION_ODV),
-    m_filteredChainLag                         (UQ_MH_SG_FILTERED_CHAIN_LAG_ODV),
-    m_filteredChainDataOutputFileName          (UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV),
-    m_filteredChainDataOutputFileType          (UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV),
-    m_filteredChainDataOutputAllowAll          (UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_ALLOW_ALL_ODV),
-  //m_filteredChainDataOutputAllowedSet        (),
-#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-    m_filteredChainComputeStats                (UQ_MH_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV),
-#endif
-    m_displayCandidates                        (UQ_MH_SG_DISPLAY_CANDIDATES_ODV),
-    m_putOutOfBoundsInChain                    (UQ_MH_SG_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV),
-    m_tkUseLocalHessian                        (UQ_MH_SG_TK_USE_LOCAL_HESSIAN_ODV),
-    m_tkUseNewtonComponent                     (UQ_MH_SG_TK_USE_NEWTON_COMPONENT_ODV),
-    m_drMaxNumExtraStages                      (UQ_MH_SG_DR_MAX_NUM_EXTRA_STAGES_ODV),
-    m_drScalesForExtraStages                   (0),
-    m_drDuringAmNonAdaptiveInt                 (UQ_MH_SG_DR_DURING_AM_NON_ADAPTIVE_INT_ODV),
-    m_amKeepInitialMatrix                      (UQ_MH_SG_AM_KEEP_INITIAL_MATRIX_ODV),
-    m_amInitialNonAdaptInterval                (UQ_MH_SG_AM_INIT_NON_ADAPT_INT_ODV),
-    m_amAdaptInterval                          (UQ_MH_SG_AM_ADAPT_INTERVAL_ODV),
-    m_amAdaptedMatricesDataOutputPeriod        (UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_PERIOD_ODV),
-    m_amAdaptedMatricesDataOutputFileName      (UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_NAME_ODV),
-    m_amAdaptedMatricesDataOutputFileType      (UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_TYPE_ODV),
-    m_amAdaptedMatricesDataOutputAllowAll      (UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_ALLOW_ALL_ODV),
-  //m_amAdaptedMatricesDataOutputAllowedSet    (),
-    m_amEta                                    (UQ_MH_SG_AM_ETA_ODV),
-    m_amEpsilon                                (UQ_MH_SG_AM_EPSILON_ODV),
-    m_enableBrooksGelmanConvMonitor            (UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR),
-    m_BrooksGelmanLag                          (UQ_MH_SG_BROOKS_GELMAN_LAG),
-    m_outputLogLikelihood                      (UQ_MH_SG_OUTPUT_LOG_LIKELIHOOD),
-    m_outputLogTarget                          (UQ_MH_SG_OUTPUT_LOG_TARGET),
-    m_doLogitTransform                         (UQ_MH_SG_DO_LOGIT_TRANSFORM),
-    m_algorithm                                (UQ_MH_SG_ALGORITHM),
-    m_tk                                       (UQ_MH_SG_TK),
-    m_updateInterval                           (UQ_MH_SG_UPDATE_INTERVAL),
-#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-    m_alternativeRawSsOptionsValues            (),
-    m_alternativeFilteredSsOptionsValues       (),
-#endif
-    m_env(NULL),
+  m_env(NULL)
 #ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
-    m_parser(),
+  , m_parser(new BoostInputOptionsParser())
 #endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
-    m_option_help                                      (m_prefix + "help"                                      ),
-    m_option_dataOutputFileName                        (m_prefix + "dataOutputFileName"                        ),
-    m_option_dataOutputAllowAll                        (m_prefix + "dataOutputAllowAll"                        ),
-    m_option_dataOutputAllowedSet                      (m_prefix + "dataOutputAllowedSet"                      ),
-    m_option_totallyMute                               (m_prefix + "totallyMute"                               ),
-    m_option_initialPosition_dataInputFileName         (m_prefix + "initialPosition_dataInputFileName"         ),
-    m_option_initialPosition_dataInputFileType         (m_prefix + "initialPosition_dataInputFileType"         ),
-    m_option_initialProposalCovMatrix_dataInputFileName(m_prefix + "initialProposalCovMatrix_dataInputFileName"),
-    m_option_initialProposalCovMatrix_dataInputFileType(m_prefix + "initialProposalCovMatrix_dataInputFileType"),
-    m_option_listOfDisabledParameters                  (m_prefix + "listOfDisabledParameters"                  ),
-    m_option_rawChain_dataInputFileName                (m_prefix + "rawChain_dataInputFileName"                ),
-    m_option_rawChain_dataInputFileType                (m_prefix + "rawChain_dataInputFileType"                ),
-    m_option_rawChain_size                             (m_prefix + "rawChain_size"                             ),
-    m_option_rawChain_generateExtra                    (m_prefix + "rawChain_generateExtra"                    ),
-    m_option_rawChain_displayPeriod                    (m_prefix + "rawChain_displayPeriod"                    ),
-    m_option_rawChain_measureRunTimes                  (m_prefix + "rawChain_measureRunTimes"                  ),
-    m_option_rawChain_dataOutputPeriod                 (m_prefix + "rawChain_dataOutputPeriod"                 ),
-    m_option_rawChain_dataOutputFileName               (m_prefix + "rawChain_dataOutputFileName"               ),
-    m_option_rawChain_dataOutputFileType               (m_prefix + "rawChain_dataOutputFileType"               ),
-    m_option_rawChain_dataOutputAllowAll               (m_prefix + "rawChain_dataOutputAllowAll"               ),
-    m_option_rawChain_dataOutputAllowedSet             (m_prefix + "rawChain_dataOutputAllowedSet"             ),
-#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-    m_option_rawChain_computeStats                     (m_prefix + "rawChain_computeStats"                     ),
-#endif
-    m_option_filteredChain_generate                    (m_prefix + "filteredChain_generate"                    ),
-    m_option_filteredChain_discardedPortion            (m_prefix + "filteredChain_discardedPortion"            ),
-    m_option_filteredChain_lag                         (m_prefix + "filteredChain_lag"                         ),
-    m_option_filteredChain_dataOutputFileName          (m_prefix + "filteredChain_dataOutputFileName"          ),
-    m_option_filteredChain_dataOutputFileType          (m_prefix + "filteredChain_dataOutputFileType"          ),
-    m_option_filteredChain_dataOutputAllowAll          (m_prefix + "filteredChain_dataOutputAllowAll"          ),
-    m_option_filteredChain_dataOutputAllowedSet        (m_prefix + "filteredChain_dataOutputAllowedSet"        ),
-#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-    m_option_filteredChain_computeStats                (m_prefix + "filteredChain_computeStats"                ),
-#endif
-    m_option_displayCandidates                         (m_prefix + "displayCandidates"                         ),
-    m_option_putOutOfBoundsInChain                     (m_prefix + "putOutOfBoundsInChain"                     ),
-    m_option_tk_useLocalHessian                        (m_prefix + "tk_useLocalHessian"                        ),
-    m_option_tk_useNewtonComponent                     (m_prefix + "tk_useNewtonComponent"                     ),
-    m_option_dr_maxNumExtraStages                      (m_prefix + "dr_maxNumExtraStages"                      ),
-    m_option_dr_listOfScalesForExtraStages             (m_prefix + "dr_listOfScalesForExtraStages"             ),
-    m_option_dr_duringAmNonAdaptiveInt                 (m_prefix + "dr_duringAmNonAdaptiveInt"                 ),
-    m_option_am_keepInitialMatrix                      (m_prefix + "am_keepInitialMatrix"                      ),
-    m_option_am_initialNonAdaptInterval                (m_prefix + "am_initialNonAdaptInterval"                ),
-    m_option_am_adaptInterval                          (m_prefix + "am_adaptInterval"                          ),
-    m_option_am_adaptedMatrices_dataOutputPeriod       (m_prefix + "am_adaptedMatrices_dataOutputPeriod"       ),
-    m_option_am_adaptedMatrices_dataOutputFileName     (m_prefix + "am_adaptedMatrices_dataOutputFileName"     ),
-    m_option_am_adaptedMatrices_dataOutputFileType     (m_prefix + "am_adaptedMatrices_dataOutputFileType"     ),
-    m_option_am_adaptedMatrices_dataOutputAllowAll     (m_prefix + "am_adaptedMatrices_dataOutputAllowAll"     ),
-    m_option_am_adaptedMatrices_dataOutputAllowedSet   (m_prefix + "am_adaptedMatrices_dataOutputAllowedSet"   ),
-    m_option_am_eta                                    (m_prefix + "am_eta"                                    ),
-    m_option_am_epsilon                                (m_prefix + "am_epsilon"                                ),
-    m_option_enableBrooksGelmanConvMonitor             (m_prefix + "enableBrooksGelmanConvMonitor"             ),
-    m_option_BrooksGelmanLag                           (m_prefix + "BrooksGelmanLag"                           ),
-    m_option_outputLogLikelihood                       (m_prefix + "outputLogLikelihood"                       ),
-    m_option_outputLogTarget                           (m_prefix + "outputLogTarget"                           ),
-    m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          ),
-    m_option_algorithm                                 (m_prefix + "algorithm"                                 ),
-    m_option_tk                                        (m_prefix + "tk"                                        ),
-    m_option_updateInterval                            (m_prefix + "updateInterval"                            )
 {
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (alternativeRawSsOptionsValues     ) m_alternativeRawSsOptionsValues      = *alternativeRawSsOptionsValues;
   if (alternativeFilteredSsOptionsValues) m_alternativeFilteredSsOptionsValues = *alternativeFilteredSsOptionsValues;
 #endif
+
+  this->set_defaults();
+  this->set_prefix("");
 }
 
 MhOptionsValues::MhOptionsValues(
@@ -191,381 +71,16 @@ MhOptionsValues::MhOptionsValues(
   const BaseEnvironment * env,
   const char * prefix
   )
-  :
-    m_prefix                                           ((std::string)(prefix) + "mh_"),
-    m_help(UQ_MH_SG_HELP),
-    m_dataOutputFileName                       (UQ_MH_SG_DATA_OUTPUT_FILE_NAME_ODV),
-    m_dataOutputAllowAll                       (UQ_MH_SG_DATA_OUTPUT_ALLOW_ALL_ODV),
-  //m_dataOutputAllowedSet                     (),
-    m_totallyMute                              (UQ_MH_SG_TOTALLY_MUTE_ODV),
-    m_initialPositionDataInputFileName         (UQ_MH_SG_INITIAL_POSITION_DATA_INPUT_FILE_NAME_ODV),
-    m_initialPositionDataInputFileType         (UQ_MH_SG_INITIAL_POSITION_DATA_INPUT_FILE_TYPE_ODV),
-    m_initialProposalCovMatrixDataInputFileName(UQ_MH_SG_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_NAME_ODV),
-    m_initialProposalCovMatrixDataInputFileType(UQ_MH_SG_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_TYPE_ODV),
-  //m_parameterDisabledSet                     (),
-    m_rawChainDataInputFileName                (UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV),
-    m_rawChainDataInputFileType                (UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_TYPE_ODV),
-    m_rawChainSize                             (UQ_MH_SG_RAW_CHAIN_SIZE_ODV),
-    m_rawChainGenerateExtra                    (UQ_MH_SG_RAW_CHAIN_GENERATE_EXTRA_ODV),
-    m_rawChainDisplayPeriod                    (UQ_MH_SG_RAW_CHAIN_DISPLAY_PERIOD_ODV),
-    m_rawChainMeasureRunTimes                  (UQ_MH_SG_RAW_CHAIN_MEASURE_RUN_TIMES_ODV),
-    m_rawChainDataOutputPeriod                 (UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_PERIOD_ODV),
-    m_rawChainDataOutputFileName               (UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV),
-    m_rawChainDataOutputFileType               (UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV),
-    m_rawChainDataOutputAllowAll               (UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_ALLOW_ALL_ODV),
-  //m_rawChainDataOutputAllowedSet             (),
-#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-    m_rawChainComputeStats                     (UQ_MH_SG_RAW_CHAIN_COMPUTE_STATS_ODV),
-#endif
-    m_filteredChainGenerate                    (UQ_MH_SG_FILTERED_CHAIN_GENERATE_ODV),
-    m_filteredChainDiscardedPortion            (UQ_MH_SG_FILTERED_CHAIN_DISCARDED_PORTION_ODV),
-    m_filteredChainLag                         (UQ_MH_SG_FILTERED_CHAIN_LAG_ODV),
-    m_filteredChainDataOutputFileName          (UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV),
-    m_filteredChainDataOutputFileType          (UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV),
-    m_filteredChainDataOutputAllowAll          (UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_ALLOW_ALL_ODV),
-  //m_filteredChainDataOutputAllowedSet        (),
-#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-    m_filteredChainComputeStats                (UQ_MH_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV),
-#endif
-    m_displayCandidates                        (UQ_MH_SG_DISPLAY_CANDIDATES_ODV),
-    m_putOutOfBoundsInChain                    (UQ_MH_SG_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV),
-    m_tkUseLocalHessian                        (UQ_MH_SG_TK_USE_LOCAL_HESSIAN_ODV),
-    m_tkUseNewtonComponent                     (UQ_MH_SG_TK_USE_NEWTON_COMPONENT_ODV),
-    m_drMaxNumExtraStages                      (UQ_MH_SG_DR_MAX_NUM_EXTRA_STAGES_ODV),
-    m_drScalesForExtraStages                   (0),
-    m_drDuringAmNonAdaptiveInt                 (UQ_MH_SG_DR_DURING_AM_NON_ADAPTIVE_INT_ODV),
-    m_amKeepInitialMatrix                      (UQ_MH_SG_AM_KEEP_INITIAL_MATRIX_ODV),
-    m_amInitialNonAdaptInterval                (UQ_MH_SG_AM_INIT_NON_ADAPT_INT_ODV),
-    m_amAdaptInterval                          (UQ_MH_SG_AM_ADAPT_INTERVAL_ODV),
-    m_amAdaptedMatricesDataOutputPeriod        (UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_PERIOD_ODV),
-    m_amAdaptedMatricesDataOutputFileName      (UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_NAME_ODV),
-    m_amAdaptedMatricesDataOutputFileType      (UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_TYPE_ODV),
-    m_amAdaptedMatricesDataOutputAllowAll      (UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_ALLOW_ALL_ODV),
-  //m_amAdaptedMatricesDataOutputAllowedSet    (),
-    m_amEta                                    (UQ_MH_SG_AM_ETA_ODV),
-    m_amEpsilon                                (UQ_MH_SG_AM_EPSILON_ODV),
-    m_enableBrooksGelmanConvMonitor            (UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR),
-    m_BrooksGelmanLag                          (UQ_MH_SG_BROOKS_GELMAN_LAG),
-    m_outputLogLikelihood                      (UQ_MH_SG_OUTPUT_LOG_LIKELIHOOD),
-    m_outputLogTarget                          (UQ_MH_SG_OUTPUT_LOG_TARGET),
-    m_doLogitTransform                         (UQ_MH_SG_DO_LOGIT_TRANSFORM),
-    m_algorithm                                (UQ_MH_SG_ALGORITHM),
-    m_tk                                       (UQ_MH_SG_TK),
-    m_updateInterval                           (UQ_MH_SG_UPDATE_INTERVAL),
-#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-    m_alternativeRawSsOptionsValues            (),
-    m_alternativeFilteredSsOptionsValues       (),
-#endif
-    m_env(env),
-#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
-    m_parser(new BoostInputOptionsParser(env->optionsInputFileName())),
-#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
-    m_option_help                                      (m_prefix + "help"                                      ),
-    m_option_dataOutputFileName                        (m_prefix + "dataOutputFileName"                        ),
-    m_option_dataOutputAllowAll                        (m_prefix + "dataOutputAllowAll"                        ),
-    m_option_dataOutputAllowedSet                      (m_prefix + "dataOutputAllowedSet"                      ),
-    m_option_totallyMute                               (m_prefix + "totallyMute"                               ),
-    m_option_initialPosition_dataInputFileName         (m_prefix + "initialPosition_dataInputFileName"         ),
-    m_option_initialPosition_dataInputFileType         (m_prefix + "initialPosition_dataInputFileType"         ),
-    m_option_initialProposalCovMatrix_dataInputFileName(m_prefix + "initialProposalCovMatrix_dataInputFileName"),
-    m_option_initialProposalCovMatrix_dataInputFileType(m_prefix + "initialProposalCovMatrix_dataInputFileType"),
-    m_option_listOfDisabledParameters                  (m_prefix + "listOfDisabledParameters"                  ),
-    m_option_rawChain_dataInputFileName                (m_prefix + "rawChain_dataInputFileName"                ),
-    m_option_rawChain_dataInputFileType                (m_prefix + "rawChain_dataInputFileType"                ),
-    m_option_rawChain_size                             (m_prefix + "rawChain_size"                             ),
-    m_option_rawChain_generateExtra                    (m_prefix + "rawChain_generateExtra"                    ),
-    m_option_rawChain_displayPeriod                    (m_prefix + "rawChain_displayPeriod"                    ),
-    m_option_rawChain_measureRunTimes                  (m_prefix + "rawChain_measureRunTimes"                  ),
-    m_option_rawChain_dataOutputPeriod                 (m_prefix + "rawChain_dataOutputPeriod"                 ),
-    m_option_rawChain_dataOutputFileName               (m_prefix + "rawChain_dataOutputFileName"               ),
-    m_option_rawChain_dataOutputFileType               (m_prefix + "rawChain_dataOutputFileType"               ),
-    m_option_rawChain_dataOutputAllowAll               (m_prefix + "rawChain_dataOutputAllowAll"               ),
-    m_option_rawChain_dataOutputAllowedSet             (m_prefix + "rawChain_dataOutputAllowedSet"             ),
-#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-    m_option_rawChain_computeStats                     (m_prefix + "rawChain_computeStats"                     ),
-#endif
-    m_option_filteredChain_generate                    (m_prefix + "filteredChain_generate"                    ),
-    m_option_filteredChain_discardedPortion            (m_prefix + "filteredChain_discardedPortion"            ),
-    m_option_filteredChain_lag                         (m_prefix + "filteredChain_lag"                         ),
-    m_option_filteredChain_dataOutputFileName          (m_prefix + "filteredChain_dataOutputFileName"          ),
-    m_option_filteredChain_dataOutputFileType          (m_prefix + "filteredChain_dataOutputFileType"          ),
-    m_option_filteredChain_dataOutputAllowAll          (m_prefix + "filteredChain_dataOutputAllowAll"          ),
-    m_option_filteredChain_dataOutputAllowedSet        (m_prefix + "filteredChain_dataOutputAllowedSet"        ),
-#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-    m_option_filteredChain_computeStats                (m_prefix + "filteredChain_computeStats"                ),
-#endif
-    m_option_displayCandidates                         (m_prefix + "displayCandidates"                         ),
-    m_option_putOutOfBoundsInChain                     (m_prefix + "putOutOfBoundsInChain"                     ),
-    m_option_tk_useLocalHessian                        (m_prefix + "tk_useLocalHessian"                        ),
-    m_option_tk_useNewtonComponent                     (m_prefix + "tk_useNewtonComponent"                     ),
-    m_option_dr_maxNumExtraStages                      (m_prefix + "dr_maxNumExtraStages"                      ),
-    m_option_dr_listOfScalesForExtraStages             (m_prefix + "dr_listOfScalesForExtraStages"             ),
-    m_option_dr_duringAmNonAdaptiveInt                 (m_prefix + "dr_duringAmNonAdaptiveInt"                 ),
-    m_option_am_keepInitialMatrix                      (m_prefix + "am_keepInitialMatrix"                      ),
-    m_option_am_initialNonAdaptInterval                (m_prefix + "am_initialNonAdaptInterval"                ),
-    m_option_am_adaptInterval                          (m_prefix + "am_adaptInterval"                          ),
-    m_option_am_adaptedMatrices_dataOutputPeriod       (m_prefix + "am_adaptedMatrices_dataOutputPeriod"       ),
-    m_option_am_adaptedMatrices_dataOutputFileName     (m_prefix + "am_adaptedMatrices_dataOutputFileName"     ),
-    m_option_am_adaptedMatrices_dataOutputFileType     (m_prefix + "am_adaptedMatrices_dataOutputFileType"     ),
-    m_option_am_adaptedMatrices_dataOutputAllowAll     (m_prefix + "am_adaptedMatrices_dataOutputAllowAll"     ),
-    m_option_am_adaptedMatrices_dataOutputAllowedSet   (m_prefix + "am_adaptedMatrices_dataOutputAllowedSet"   ),
-    m_option_am_eta                                    (m_prefix + "am_eta"                                    ),
-    m_option_am_epsilon                                (m_prefix + "am_epsilon"                                ),
-    m_option_enableBrooksGelmanConvMonitor             (m_prefix + "enableBrooksGelmanConvMonitor"             ),
-    m_option_BrooksGelmanLag                           (m_prefix + "BrooksGelmanLag"                           ),
-    m_option_outputLogLikelihood                       (m_prefix + "outputLogLikelihood"                       ),
-    m_option_outputLogTarget                           (m_prefix + "outputLogTarget"                           ),
-    m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          ),
-    m_option_algorithm                                 (m_prefix + "algorithm"                                 ),
-    m_option_tk                                        (m_prefix + "tk"                                        ),
-    m_option_updateInterval                            (m_prefix + "updateInterval"                            )
 {
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (alternativeRawSsOptionsValues     ) m_alternativeRawSsOptionsValues      = *alternativeRawSsOptionsValues;
   if (alternativeFilteredSsOptionsValues) m_alternativeFilteredSsOptionsValues = *alternativeFilteredSsOptionsValues;
 #endif
 
-#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
-  m_parser->registerOption<std::string >(m_option_help,                                       UQ_MH_SG_HELP,                                                 "produce help msg for Bayesian Metropolis-Hastings"          );
-  m_parser->registerOption<std::string >(m_option_dataOutputFileName,                         UQ_MH_SG_DATA_OUTPUT_FILE_NAME_ODV                           , "name of generic output file"                                );
-  m_parser->registerOption<bool        >(m_option_dataOutputAllowAll,                         UQ_MH_SG_DATA_OUTPUT_ALLOW_ALL_ODV                           , "allow all subEnvs write to a generic output file"           );
-  m_parser->registerOption<std::string >(m_option_dataOutputAllowedSet,                       UQ_MH_SG_DATA_OUTPUT_ALLOWED_SET_ODV                         , "subEnvs that will write to generic output file"             );
-  m_parser->registerOption<bool        >(m_option_totallyMute,                                UQ_MH_SG_TOTALLY_MUTE_ODV                                    , "totally mute (no printout msg)"                             );
-  m_parser->registerOption<std::string >(m_option_initialPosition_dataInputFileName,          UQ_MH_SG_INITIAL_POSITION_DATA_INPUT_FILE_NAME_ODV           , "name of input file for raw chain "                          );
-  m_parser->registerOption<std::string >(m_option_initialPosition_dataInputFileType,          UQ_MH_SG_INITIAL_POSITION_DATA_INPUT_FILE_TYPE_ODV           , "type of input file for raw chain "                          );
-  m_parser->registerOption<std::string >(m_option_initialProposalCovMatrix_dataInputFileName, UQ_MH_SG_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_NAME_ODV, "name of input file for raw chain "                          );
-  m_parser->registerOption<std::string >(m_option_initialProposalCovMatrix_dataInputFileType, UQ_MH_SG_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_TYPE_ODV, "type of input file for raw chain "                          );
-  m_parser->registerOption<std::string >(m_option_listOfDisabledParameters,                   UQ_MH_SG_LIST_OF_DISABLED_PARAMETERS_ODV                     , "list of disabled parameters"                                );
-  m_parser->registerOption<std::string >(m_option_rawChain_dataInputFileName,                 UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV                  , "name of input file for raw chain "                          );
-  m_parser->registerOption<std::string >(m_option_rawChain_dataInputFileType,                 UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_TYPE_ODV                  , "type of input file for raw chain "                          );
-  m_parser->registerOption<unsigned int>(m_option_rawChain_size,                              UQ_MH_SG_RAW_CHAIN_SIZE_ODV                                  , "size of raw chain"                                          );
-  m_parser->registerOption<bool        >(m_option_rawChain_generateExtra,                     UQ_MH_SG_RAW_CHAIN_GENERATE_EXTRA_ODV                        , "generate extra information about raw chain"                 );
-  m_parser->registerOption<unsigned int>(m_option_rawChain_displayPeriod,                     UQ_MH_SG_RAW_CHAIN_DISPLAY_PERIOD_ODV                        , "period of msg display during raw chain generation"          );
-  m_parser->registerOption<bool        >(m_option_rawChain_measureRunTimes,                   UQ_MH_SG_RAW_CHAIN_MEASURE_RUN_TIMES_ODV                     , "measure run times"                                          );
-  m_parser->registerOption<unsigned int>(m_option_rawChain_dataOutputPeriod,                  UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_PERIOD_ODV                    , "period of msg display during raw chain generation"          );
-  m_parser->registerOption<std::string >(m_option_rawChain_dataOutputFileName,                UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV                 , "name of output file for raw chain "                         );
-  m_parser->registerOption<std::string >(m_option_rawChain_dataOutputFileType,                UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV                 , "type of output file for raw chain "                         );
-  m_parser->registerOption<bool        >(m_option_rawChain_dataOutputAllowAll,                UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_ALLOW_ALL_ODV                 , "allow all subEnvs to write raw chain to an output file"     );
-  m_parser->registerOption<std::string >(m_option_rawChain_dataOutputAllowedSet,              UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV               , "subEnvs that will write raw chain to output file"           );
-#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-  m_parser->registerOption<bool        >(m_option_rawChain_computeStats,                      UQ_MH_SG_RAW_CHAIN_COMPUTE_STATS_ODV                         , "compute statistics on raw chain"                            );
-#endif
-  m_parser->registerOption<bool        >(m_option_filteredChain_generate,                     UQ_MH_SG_FILTERED_CHAIN_GENERATE_ODV                         , "generate filtered chain"                                    );
-  m_parser->registerOption<double      >(m_option_filteredChain_discardedPortion,             UQ_MH_SG_FILTERED_CHAIN_DISCARDED_PORTION_ODV                , "initial discarded portion for chain filtering"              );
-  m_parser->registerOption<unsigned int>(m_option_filteredChain_lag,                          UQ_MH_SG_FILTERED_CHAIN_LAG_ODV                              , "spacing for chain filtering"                                );
-  m_parser->registerOption<std::string >(m_option_filteredChain_dataOutputFileName,           UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV            , "name of output file for filtered chain"                     );
-  m_parser->registerOption<std::string >(m_option_filteredChain_dataOutputFileType,           UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV            , "type of output file for filtered chain"                     );
-  m_parser->registerOption<bool        >(m_option_filteredChain_dataOutputAllowAll,           UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_ALLOW_ALL_ODV            , "allow all subEnvs to write filt chain to an output file"    );
-  m_parser->registerOption<std::string >(m_option_filteredChain_dataOutputAllowedSet,         UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV          , "subEnvs that will write filt chain to output file"          );
-#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-  m_parser->registerOption<bool        >(m_option_filteredChain_computeStats,                 UQ_MH_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV                    , "compute statistics on filtered chain"                       );
-#endif
-  m_parser->registerOption<bool        >(m_option_displayCandidates,                          UQ_MH_SG_DISPLAY_CANDIDATES_ODV                              , "display candidates in the core MH algorithm"                );
-  m_parser->registerOption<bool        >(m_option_putOutOfBoundsInChain,                      UQ_MH_SG_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV                      , "put 'out of bound' candidates in chain as well"             );
-  m_parser->registerOption<bool        >(m_option_tk_useLocalHessian,                         UQ_MH_SG_TK_USE_LOCAL_HESSIAN_ODV                            , "'proposal' use local Hessian"                               );
-  m_parser->registerOption<bool        >(m_option_tk_useNewtonComponent,                      UQ_MH_SG_TK_USE_NEWTON_COMPONENT_ODV                         , "'proposal' use Newton component"                            );
-  m_parser->registerOption<unsigned int>(m_option_dr_maxNumExtraStages,                       UQ_MH_SG_DR_MAX_NUM_EXTRA_STAGES_ODV                         , "'dr' maximum number of extra stages"                        );
-  m_parser->registerOption<std::string >(m_option_dr_listOfScalesForExtraStages,              UQ_MH_SG_DR_LIST_OF_SCALES_FOR_EXTRA_STAGES_ODV              , "'dr' scales for prop cov matrices from 2nd stage on"        );
-  m_parser->registerOption<bool        >(m_option_dr_duringAmNonAdaptiveInt,                  UQ_MH_SG_DR_DURING_AM_NON_ADAPTIVE_INT_ODV                   , "'dr' used during 'am' non adaptive interval"                );
-  m_parser->registerOption<bool        >(m_option_am_keepInitialMatrix,                       UQ_MH_SG_AM_KEEP_INITIAL_MATRIX_ODV                          , "'am' keep initial (given) matrix"                           );
-  m_parser->registerOption<unsigned int>(m_option_am_initialNonAdaptInterval,                 UQ_MH_SG_AM_INIT_NON_ADAPT_INT_ODV                           , "'am' initial non adaptation interval"                       );
-  m_parser->registerOption<unsigned int>(m_option_am_adaptInterval,                           UQ_MH_SG_AM_ADAPT_INTERVAL_ODV                               , "'am' adaptation interval"                                   );
-  m_parser->registerOption<unsigned int>(m_option_am_adaptedMatrices_dataOutputPeriod,        UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_PERIOD_ODV          , "period for outputting 'am' adapted matrices"                );
-  m_parser->registerOption<std::string >(m_option_am_adaptedMatrices_dataOutputFileName,      UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_NAME_ODV       , "name of output file for 'am' adapted matrices"              );
-  m_parser->registerOption<std::string >(m_option_am_adaptedMatrices_dataOutputFileType,      UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_TYPE_ODV       , "type of output file for 'am' adapted matrices"              );
-  m_parser->registerOption<bool        >(m_option_am_adaptedMatrices_dataOutputAllowAll,      UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_ALLOW_ALL_ODV       , "type of output file for 'am' adapted matrices"              );
-  m_parser->registerOption<std::string >(m_option_am_adaptedMatrices_dataOutputAllowedSet,    UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_ALLOWED_SET_ODV     , "type of output file for 'am' adapted matrices"              );
-  m_parser->registerOption<double      >(m_option_am_eta,                                     UQ_MH_SG_AM_ETA_ODV                                          , "'am' eta"                                                   );
-  m_parser->registerOption<double      >(m_option_am_epsilon,                                 UQ_MH_SG_AM_EPSILON_ODV                                      , "'am' epsilon"                                               );
-  m_parser->registerOption<unsigned int>(m_option_enableBrooksGelmanConvMonitor,              UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR                   , "assess convergence using Brooks-Gelman metric"              );
-  m_parser->registerOption<unsigned int>(m_option_BrooksGelmanLag,                            UQ_MH_SG_BROOKS_GELMAN_LAG                                   , "number of chain positions before starting to compute metric");
-  m_parser->registerOption<bool        >(m_option_outputLogLikelihood,                        UQ_MH_SG_OUTPUT_LOG_LIKELIHOOD                               , "flag to toggle output of log likelihood values"             );
-  m_parser->registerOption<bool        >(m_option_outputLogTarget,                            UQ_MH_SG_OUTPUT_LOG_TARGET                                   , "flag to toggle output of log target values"                 );
-  m_parser->registerOption<bool        >(m_option_doLogitTransform,                           UQ_MH_SG_DO_LOGIT_TRANSFORM                                  , "flag to toggle logit transform for bounded domains"         );
-  m_parser->registerOption<std::string >(m_option_algorithm,                                  UQ_MH_SG_ALGORITHM                                           , "which MCMC algorithm to use"                                );
-  m_parser->registerOption<std::string >(m_option_tk,                                         UQ_MH_SG_TK                                                  , "which MCMC transition kernel to use"                        );
-  m_parser->registerOption<unsigned int>(m_option_updateInterval,                             UQ_MH_SG_UPDATE_INTERVAL                                     , "how often to call updateTK method"                          );
-
-  m_parser->scanInputFile();
-
-  m_parser->getOption<std::string >(m_option_help,                                       m_help);
-  m_parser->getOption<std::string >(m_option_dataOutputFileName,                         m_dataOutputFileName);
-  m_parser->getOption<bool        >(m_option_dataOutputAllowAll,                         m_dataOutputAllowAll);
-  m_parser->getOption<std::set<unsigned int> >(m_option_dataOutputAllowedSet,                       m_dataOutputAllowedSet);
-  m_parser->getOption<bool        >(m_option_totallyMute,                                m_totallyMute);
-  m_parser->getOption<std::string >(m_option_initialPosition_dataInputFileName,          m_initialPositionDataInputFileName);
-  m_parser->getOption<std::string >(m_option_initialPosition_dataInputFileType,          m_initialPositionDataInputFileType);
-  m_parser->getOption<std::string >(m_option_initialProposalCovMatrix_dataInputFileName, m_initialProposalCovMatrixDataInputFileName);
-  m_parser->getOption<std::string >(m_option_initialProposalCovMatrix_dataInputFileType, m_initialProposalCovMatrixDataInputFileType);
-  m_parser->getOption<std::set<unsigned int> >(m_option_listOfDisabledParameters,                   m_parameterDisabledSet);
-  m_parser->getOption<std::string >(m_option_rawChain_dataInputFileName,                 m_rawChainDataInputFileName);
-  m_parser->getOption<std::string >(m_option_rawChain_dataInputFileType,                 m_rawChainDataInputFileType);
-  m_parser->getOption<unsigned int>(m_option_rawChain_size,                              m_rawChainSize);
-  m_parser->getOption<bool        >(m_option_rawChain_generateExtra,                     m_rawChainGenerateExtra);
-  m_parser->getOption<unsigned int>(m_option_rawChain_displayPeriod,                     m_rawChainDisplayPeriod);
-  m_parser->getOption<bool        >(m_option_rawChain_measureRunTimes,                   m_rawChainMeasureRunTimes);
-  m_parser->getOption<unsigned int>(m_option_rawChain_dataOutputPeriod,                  m_rawChainDataOutputPeriod);
-  m_parser->getOption<std::string >(m_option_rawChain_dataOutputFileName,                m_rawChainDataOutputFileName);
-  m_parser->getOption<std::string >(m_option_rawChain_dataOutputFileType,                m_rawChainDataOutputFileType);
-  m_parser->getOption<bool        >(m_option_rawChain_dataOutputAllowAll,                m_rawChainDataOutputAllowAll);
-  m_parser->getOption<std::set<unsigned int> >(m_option_rawChain_dataOutputAllowedSet,              m_rawChainDataOutputAllowedSet);
-#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-  m_parser->getOption<bool        >(m_option_rawChain_computeStats,                      m_rawChain_computeStats);
-#endif
-  m_parser->getOption<bool        >(m_option_filteredChain_generate,                     m_filteredChainGenerate);
-  m_parser->getOption<double      >(m_option_filteredChain_discardedPortion,             m_filteredChainDiscardedPortion);
-  m_parser->getOption<unsigned int>(m_option_filteredChain_lag,                          m_filteredChainLag);
-  m_parser->getOption<std::string >(m_option_filteredChain_dataOutputFileName,           m_filteredChainDataOutputFileName);
-  m_parser->getOption<std::string >(m_option_filteredChain_dataOutputFileType,           m_filteredChainDataOutputFileType);
-  m_parser->getOption<bool        >(m_option_filteredChain_dataOutputAllowAll,           m_filteredChainDataOutputAllowAll);
-  m_parser->getOption<std::set<unsigned int> >(m_option_filteredChain_dataOutputAllowedSet,         m_filteredChainDataOutputAllowedSet);
-#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-  m_parser->getOption<bool        >(m_option_filteredChain_computeStats,                 m_filteredChain_computeStats);
-#endif
-  m_parser->getOption<bool        >(m_option_displayCandidates,                          m_displayCandidates);
-  m_parser->getOption<bool        >(m_option_putOutOfBoundsInChain,                      m_putOutOfBoundsInChain);
-  m_parser->getOption<bool        >(m_option_tk_useLocalHessian,                         m_tkUseLocalHessian);
-  m_parser->getOption<bool        >(m_option_tk_useNewtonComponent,                      m_tkUseNewtonComponent);
-  m_parser->getOption<unsigned int>(m_option_dr_maxNumExtraStages,                       m_drMaxNumExtraStages);
-  m_parser->getOption<std::vector<double> >(m_option_dr_listOfScalesForExtraStages,              m_drScalesForExtraStages);
-  m_parser->getOption<bool        >(m_option_dr_duringAmNonAdaptiveInt,                  m_drDuringAmNonAdaptiveInt);
-  m_parser->getOption<bool        >(m_option_am_keepInitialMatrix,                       m_amKeepInitialMatrix);
-  m_parser->getOption<unsigned int>(m_option_am_initialNonAdaptInterval,                 m_amInitialNonAdaptInterval);
-  m_parser->getOption<unsigned int>(m_option_am_adaptInterval,                           m_amAdaptInterval);
-  m_parser->getOption<unsigned int>(m_option_am_adaptedMatrices_dataOutputPeriod,        m_amAdaptedMatricesDataOutputPeriod);
-  m_parser->getOption<std::string >(m_option_am_adaptedMatrices_dataOutputFileName,      m_amAdaptedMatricesDataOutputFileName);
-  m_parser->getOption<std::string >(m_option_am_adaptedMatrices_dataOutputFileType,      m_amAdaptedMatricesDataOutputFileType);
-  m_parser->getOption<bool        >(m_option_am_adaptedMatrices_dataOutputAllowAll,      m_amAdaptedMatricesDataOutputAllowAll);
-  m_parser->getOption<std::set<unsigned int> >(m_option_am_adaptedMatrices_dataOutputAllowedSet,    m_amAdaptedMatricesDataOutputAllowedSet);
-  m_parser->getOption<double      >(m_option_am_eta,                                     m_amEta);
-  m_parser->getOption<double      >(m_option_am_epsilon,                                 m_amEpsilon);
-  m_parser->getOption<unsigned int>(m_option_enableBrooksGelmanConvMonitor,              m_enableBrooksGelmanConvMonitor);
-  m_parser->getOption<unsigned int>(m_option_BrooksGelmanLag,                            m_BrooksGelmanLag);
-  m_parser->getOption<bool        >(m_option_outputLogLikelihood,                        m_outputLogLikelihood);
-  m_parser->getOption<bool        >(m_option_outputLogTarget,                            m_outputLogTarget);
-  m_parser->getOption<bool        >(m_option_doLogitTransform,                           m_doLogitTransform);
-  m_parser->getOption<std::string >(m_option_algorithm,                                  m_algorithm);
-  m_parser->getOption<std::string >(m_option_tk,                                         m_tk);
-  m_parser->getOption<unsigned int>(m_option_updateInterval,                             m_updateInterval);
-#else
-  m_help = m_env->input()(m_option_help, UQ_MH_SG_HELP);
-  m_dataOutputFileName = m_env->input()(m_option_dataOutputFileName, UQ_MH_SG_DATA_OUTPUT_FILE_NAME_ODV);
-  m_dataOutputAllowAll = m_env->input()(m_option_dataOutputAllowAll, UQ_MH_SG_DATA_OUTPUT_ALLOW_ALL_ODV);
-
-  // UQ_MH_SG_DATA_OUTPUT_ALLOWED_SET_ODV is the empty set (string) by default
-  unsigned int size = m_env->input().vector_variable_size(m_option_dataOutputAllowedSet);
-  for (unsigned int i = 0; i < size; i++) {
-    // We default to empty set, so the default values are actually never used
-    // here
-    unsigned int allowed = m_env->input()(m_option_dataOutputAllowedSet, i, i);
-    m_dataOutputAllowedSet.insert(allowed);
-  }
-
-  m_totallyMute = m_env->input()(m_option_totallyMute, UQ_MH_SG_TOTALLY_MUTE_ODV);
-  m_initialPositionDataInputFileName = m_env->input()(m_option_initialPosition_dataInputFileName, UQ_MH_SG_INITIAL_POSITION_DATA_INPUT_FILE_NAME_ODV);
-  m_initialPositionDataInputFileType = m_env->input()(m_option_initialPosition_dataInputFileType, UQ_MH_SG_INITIAL_POSITION_DATA_INPUT_FILE_TYPE_ODV);
-  m_initialProposalCovMatrixDataInputFileName = m_env->input()(m_option_initialProposalCovMatrix_dataInputFileName, UQ_MH_SG_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_NAME_ODV);
-  m_initialProposalCovMatrixDataInputFileType = m_env->input()(m_option_initialProposalCovMatrix_dataInputFileType, UQ_MH_SG_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_TYPE_ODV);
-
-  // UQ_MH_SG_LIST_OF_DISABLED_PARAMETERS_ODV is the empty set (string) by
-  // default
-  size = m_env->input().vector_variable_size(m_option_listOfDisabledParameters);
-  for (unsigned int i = 0; i < size; i++) {
-    // We default to empty set, so the default values are actually never used
-    // here
-    unsigned int disabled = m_env->input()(m_option_listOfDisabledParameters, i, i);
-    m_parameterDisabledSet.insert(disabled);
-  }
-
-  m_rawChainDataInputFileName = m_env->input()(m_option_rawChain_dataInputFileName, UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV);
-  m_rawChainDataInputFileType = m_env->input()(m_option_rawChain_dataInputFileType, UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_TYPE_ODV);
-  m_rawChainSize = m_env->input()(m_option_rawChain_size, UQ_MH_SG_RAW_CHAIN_SIZE_ODV);
-  m_rawChainGenerateExtra = m_env->input()(m_option_rawChain_generateExtra, UQ_MH_SG_RAW_CHAIN_GENERATE_EXTRA_ODV);
-  m_rawChainDisplayPeriod = m_env->input()(m_option_rawChain_displayPeriod, UQ_MH_SG_RAW_CHAIN_DISPLAY_PERIOD_ODV);
-  m_rawChainMeasureRunTimes = m_env->input()(m_option_rawChain_measureRunTimes, UQ_MH_SG_RAW_CHAIN_MEASURE_RUN_TIMES_ODV);
-  m_rawChainDataOutputPeriod = m_env->input()(m_option_rawChain_dataOutputPeriod, UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_PERIOD_ODV);
-  m_rawChainDataOutputFileName = m_env->input()(m_option_rawChain_dataOutputFileName, UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV);
-  m_rawChainDataOutputFileType = m_env->input()(m_option_rawChain_dataOutputFileType, UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV);
-  m_rawChainDataOutputAllowAll = m_env->input()(m_option_rawChain_dataOutputAllowAll, UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_ALLOW_ALL_ODV);
-
-  // UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV is the empty set (string) by default
-  size = m_env->input().vector_variable_size(m_option_rawChain_dataOutputAllowedSet);
-  for (unsigned int i = 0; i < size; i++) {
-    // We default to empty set, so the default values are actually never used
-    // here
-    unsigned int allowed = m_env->input()(m_option_rawChain_dataOutputAllowedSet, i, i);
-    m_rawChainDataOutputAllowedSet.insert(allowed);
-  }
-
-#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-  m_rawChain_computeStats = m_env->input()(m_option_rawChain_computeStats, UQ_MH_SG_RAW_CHAIN_COMPUTE_STATS_ODV);
-#endif
-  m_filteredChainGenerate = m_env->input()(m_option_filteredChain_generate, UQ_MH_SG_FILTERED_CHAIN_GENERATE_ODV);
-  m_filteredChainDiscardedPortion = m_env->input()(m_option_filteredChain_discardedPortion, UQ_MH_SG_FILTERED_CHAIN_DISCARDED_PORTION_ODV);
-  m_filteredChainLag = m_env->input()(m_option_filteredChain_lag, UQ_MH_SG_FILTERED_CHAIN_LAG_ODV);
-  m_filteredChainDataOutputFileName = m_env->input()(m_option_filteredChain_dataOutputFileName, UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV);
-  m_filteredChainDataOutputFileType = m_env->input()(m_option_filteredChain_dataOutputFileType, UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV);
-  m_filteredChainDataOutputAllowAll = m_env->input()(m_option_filteredChain_dataOutputAllowAll, UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_ALLOW_ALL_ODV);
-
-  // UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV is the empty set (string) by default
-  size = m_env->input().vector_variable_size(m_option_filteredChain_dataOutputAllowedSet);
-  for (unsigned int i = 0; i < size; i++) {
-    // We default to empty set, so the default values are actually never used
-    // here
-    unsigned int allowed = m_env->input()(m_option_filteredChain_dataOutputAllowedSet, i, i);
-    m_filteredChainDataOutputAllowedSet.insert(allowed);
-  }
-
-#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-  m_filteredChain_computeStats = m_env->input()(m_option_filteredChain_computeStats, UQ_MH_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV);
-#endif
-  m_displayCandidates = m_env->input()(m_option_displayCandidates, UQ_MH_SG_DISPLAY_CANDIDATES_ODV);
-  m_putOutOfBoundsInChain = m_env->input()(m_option_putOutOfBoundsInChain, UQ_MH_SG_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV);
-  m_tkUseLocalHessian = m_env->input()(m_option_tk_useLocalHessian, UQ_MH_SG_TK_USE_LOCAL_HESSIAN_ODV);
-  m_tkUseNewtonComponent = m_env->input()(m_option_tk_useNewtonComponent, UQ_MH_SG_TK_USE_NEWTON_COMPONENT_ODV);
-  m_drMaxNumExtraStages = m_env->input()(m_option_dr_maxNumExtraStages, UQ_MH_SG_DR_MAX_NUM_EXTRA_STAGES_ODV);
-
-  // UQ_MH_SG_DR_LIST_OF_SCALES_FOR_EXTRA_STAGES_ODV is the empty set (string) by default
-  size = m_env->input().vector_variable_size(m_option_dr_listOfScalesForExtraStages);
-  for (unsigned int i = 0; i < size; i++) {
-    // We default to empty set, so the default values are actually never used
-    // here
-    unsigned int allowed = m_env->input()(m_option_dr_listOfScalesForExtraStages, i, i);
-    m_drScalesForExtraStages.push_back(allowed);
-  }
-
-  m_drDuringAmNonAdaptiveInt = m_env->input()(m_option_dr_duringAmNonAdaptiveInt, UQ_MH_SG_DR_DURING_AM_NON_ADAPTIVE_INT_ODV);
-  m_amKeepInitialMatrix = m_env->input()(m_option_am_keepInitialMatrix, UQ_MH_SG_AM_KEEP_INITIAL_MATRIX_ODV);
-  m_amInitialNonAdaptInterval = m_env->input()(m_option_am_initialNonAdaptInterval, UQ_MH_SG_AM_INIT_NON_ADAPT_INT_ODV);
-  m_amAdaptInterval = m_env->input()(m_option_am_adaptInterval, UQ_MH_SG_AM_ADAPT_INTERVAL_ODV);
-  m_amAdaptedMatricesDataOutputPeriod = m_env->input()(m_option_am_adaptedMatrices_dataOutputPeriod, UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_PERIOD_ODV);
-  m_amAdaptedMatricesDataOutputFileName = m_env->input()(m_option_am_adaptedMatrices_dataOutputFileName, UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_NAME_ODV);
-  m_amAdaptedMatricesDataOutputFileType = m_env->input()(m_option_am_adaptedMatrices_dataOutputFileType, UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_TYPE_ODV);
-  m_amAdaptedMatricesDataOutputAllowAll = m_env->input()(m_option_am_adaptedMatrices_dataOutputAllowAll, UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_ALLOW_ALL_ODV);
-
-  // UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_ALLOWED_SET_ODV is the empty set (string) by default
-  size = m_env->input().vector_variable_size(m_option_am_adaptedMatrices_dataOutputAllowedSet);
-  for (unsigned int i = 0; i < size; i++) {
-    // We default to empty set, so the default values are actually never used
-    // here
-    unsigned int allowed = m_env->input()(m_option_am_adaptedMatrices_dataOutputAllowedSet, i, i);
-    m_amAdaptedMatricesDataOutputAllowedSet.insert(allowed);
-  }
-
-  m_amEta = m_env->input()(m_option_am_eta, UQ_MH_SG_AM_ETA_ODV);
-  m_amEpsilon = m_env->input()(m_option_am_epsilon, UQ_MH_SG_AM_EPSILON_ODV);
-  m_enableBrooksGelmanConvMonitor = m_env->input()(m_option_enableBrooksGelmanConvMonitor, UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR);
-  m_BrooksGelmanLag = m_env->input()(m_option_BrooksGelmanLag, UQ_MH_SG_BROOKS_GELMAN_LAG);
-  m_outputLogLikelihood = m_env->input()(m_option_outputLogLikelihood, UQ_MH_SG_OUTPUT_LOG_LIKELIHOOD);
-  m_outputLogTarget = m_env->input()(m_option_outputLogTarget, UQ_MH_SG_OUTPUT_LOG_TARGET);
-  m_doLogitTransform = m_env->input()(m_option_doLogitTransform, UQ_MH_SG_DO_LOGIT_TRANSFORM);
-  m_algorithm = m_env->input()(m_option_algorithm, UQ_MH_SG_ALGORITHM);
-  m_tk = m_env->input()(m_option_tk, UQ_MH_SG_TK);
-  m_updateInterval = m_env->input()(m_option_updateInterval, UQ_MH_SG_UPDATE_INTERVAL);
-#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
-
-  checkOptions(env);
+  this->set_defaults();
+  this->parse(*env, prefix);
 }
+
 // Copy constructor----------------------------------
 MhOptionsValues::MhOptionsValues(const MhOptionsValues& src)
 {
@@ -725,18 +240,18 @@ MhOptionsValues::operator=(const MhOptionsValues& rhs)
 }
 // Private methods-----------------------------------
 void
-MhOptionsValues::checkOptions(const BaseEnvironment * env)
+MhOptionsValues::checkOptions()
 {
   if (m_dataOutputAllowAll) {
     // So, ignore the 'set' option
     m_dataOutputAllowedSet.clear();
-    m_dataOutputAllowedSet.insert(env->subId());
+    m_dataOutputAllowedSet.insert(m_env->subId());
   }
 
   if (m_rawChainDataOutputAllowAll) {
     // Again, ignore the set
     m_rawChainDataOutputAllowedSet.clear();
-    m_rawChainDataOutputAllowedSet.insert(env->subId());
+    m_rawChainDataOutputAllowedSet.insert(m_env->subId());
   }
 
   if (m_filteredChainGenerate == true) {
@@ -745,7 +260,7 @@ MhOptionsValues::checkOptions(const BaseEnvironment * env)
 
   if (m_filteredChainDataOutputAllowAll) {
     m_filteredChainDataOutputAllowedSet.clear();
-    m_filteredChainDataOutputAllowedSet.insert(env->subId());
+    m_filteredChainDataOutputAllowedSet.insert(m_env->subId());
   }
 
   // If max is bigger than the list provided, then pad with ones
@@ -764,7 +279,7 @@ MhOptionsValues::checkOptions(const BaseEnvironment * env)
 
   if (m_amAdaptedMatricesDataOutputAllowAll) {
     m_amAdaptedMatricesDataOutputAllowedSet.clear();
-    m_amAdaptedMatricesDataOutputAllowedSet.insert(env->subId());
+    m_amAdaptedMatricesDataOutputAllowedSet.insert(m_env->subId());
   }
 
   if ((m_tk == "random_walk") && (m_algorithm == "logit_random_walk")) {
@@ -972,5 +487,386 @@ std::ostream & operator<<(std::ostream & os, const MhOptionsValues & obj)
   return os;
 }
 
+
+void MhOptionsValues::set_prefix(const std::string& prefix)
+{
+  m_prefix = prefix + "mh_";
+
+  m_option_help = m_prefix + "help";
+  m_option_dataOutputFileName = m_prefix + "dataOutputFileName";
+  m_option_dataOutputAllowAll = m_prefix + "dataOutputAllowAll";
+  m_option_dataOutputAllowedSet = m_prefix + "dataOutputAllowedSet";
+  m_option_totallyMute = m_prefix + "totallyMute";
+  m_option_initialPosition_dataInputFileName = m_prefix + "initialPosition_dataInputFileName";
+  m_option_initialPosition_dataInputFileType = m_prefix + "initialPosition_dataInputFileType";
+  m_option_initialProposalCovMatrix_dataInputFileName = m_prefix + "initialProposalCovMatrix_dataInputFileName";
+  m_option_initialProposalCovMatrix_dataInputFileType = m_prefix + "initialProposalCovMatrix_dataInputFileType";
+  m_option_listOfDisabledParameters = m_prefix + "listOfDisabledParameters";
+  m_option_rawChain_dataInputFileName = m_prefix + "rawChain_dataInputFileName";
+  m_option_rawChain_dataInputFileType = m_prefix + "rawChain_dataInputFileType";
+  m_option_rawChain_size = m_prefix + "rawChain_size";
+  m_option_rawChain_generateExtra = m_prefix + "rawChain_generateExtra";
+  m_option_rawChain_displayPeriod = m_prefix + "rawChain_displayPeriod";
+  m_option_rawChain_measureRunTimes = m_prefix + "rawChain_measureRunTimes";
+  m_option_rawChain_dataOutputPeriod = m_prefix + "rawChain_dataOutputPeriod";
+  m_option_rawChain_dataOutputFileName = m_prefix + "rawChain_dataOutputFileName";
+  m_option_rawChain_dataOutputFileType = m_prefix + "rawChain_dataOutputFileType";
+  m_option_rawChain_dataOutputAllowAll = m_prefix + "rawChain_dataOutputAllowAll";
+  m_option_rawChain_dataOutputAllowedSet = m_prefix + "rawChain_dataOutputAllowedSet";
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+  m_option_rawChain_computeStats = m_prefix + "rawChain_computeStats";
+#endif
+  m_option_filteredChain_generate = m_prefix + "filteredChain_generate";
+  m_option_filteredChain_discardedPortion = m_prefix + "filteredChain_discardedPortion";
+  m_option_filteredChain_lag = m_prefix + "filteredChain_lag";
+  m_option_filteredChain_dataOutputFileName = m_prefix + "filteredChain_dataOutputFileName";
+  m_option_filteredChain_dataOutputFileType = m_prefix + "filteredChain_dataOutputFileType";
+  m_option_filteredChain_dataOutputAllowAll = m_prefix + "filteredChain_dataOutputAllowAll";
+  m_option_filteredChain_dataOutputAllowedSet = m_prefix + "filteredChain_dataOutputAllowedSet";
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+  m_option_filteredChain_computeStats = m_prefix + "filteredChain_computeStats";
+#endif
+  m_option_displayCandidates = m_prefix + "displayCandidates";
+  m_option_putOutOfBoundsInChain = m_prefix + "putOutOfBoundsInChain";
+  m_option_tk_useLocalHessian = m_prefix + "tk_useLocalHessian";
+  m_option_tk_useNewtonComponent = m_prefix + "tk_useNewtonComponent";
+  m_option_dr_maxNumExtraStages = m_prefix + "dr_maxNumExtraStages";
+  m_option_dr_listOfScalesForExtraStages = m_prefix + "dr_listOfScalesForExtraStages";
+  m_option_dr_duringAmNonAdaptiveInt = m_prefix + "dr_duringAmNonAdaptiveInt";
+  m_option_am_keepInitialMatrix = m_prefix + "am_keepInitialMatrix";
+  m_option_am_initialNonAdaptInterval = m_prefix + "am_initialNonAdaptInterval";
+  m_option_am_adaptInterval = m_prefix + "am_adaptInterval";
+  m_option_am_adaptedMatrices_dataOutputPeriod = m_prefix + "am_adaptedMatrices_dataOutputPeriod";
+  m_option_am_adaptedMatrices_dataOutputFileName = m_prefix + "am_adaptedMatrices_dataOutputFileName";
+  m_option_am_adaptedMatrices_dataOutputFileType = m_prefix + "am_adaptedMatrices_dataOutputFileType";
+  m_option_am_adaptedMatrices_dataOutputAllowAll = m_prefix + "am_adaptedMatrices_dataOutputAllowAll";
+  m_option_am_adaptedMatrices_dataOutputAllowedSet = m_prefix + "am_adaptedMatrices_dataOutputAllowedSet";
+  m_option_am_eta = m_prefix + "am_eta";
+  m_option_am_epsilon = m_prefix + "am_epsilon";
+  m_option_enableBrooksGelmanConvMonitor = m_prefix + "enableBrooksGelmanConvMonitor";
+  m_option_BrooksGelmanLag = m_prefix + "BrooksGelmanLag";
+  m_option_outputLogLikelihood = m_prefix + "outputLogLikelihood";
+  m_option_outputLogTarget = m_prefix + "outputLogTarget";
+  m_option_doLogitTransform = m_prefix + "doLogitTransform";
+  m_option_algorithm = m_prefix + "algorithm";
+  m_option_tk = m_prefix + "tk";
+  m_option_updateInterval = m_prefix + "updateInterval";
+}
+
+
+void MhOptionsValues::set_defaults()
+{
+    m_help = UQ_MH_SG_HELP;
+    m_dataOutputFileName = UQ_MH_SG_DATA_OUTPUT_FILE_NAME_ODV;
+    m_dataOutputAllowAll = UQ_MH_SG_DATA_OUTPUT_ALLOW_ALL_ODV;
+  //m_dataOutputAllowedSet                     (),
+    m_totallyMute = UQ_MH_SG_TOTALLY_MUTE_ODV;
+    m_initialPositionDataInputFileName = UQ_MH_SG_INITIAL_POSITION_DATA_INPUT_FILE_NAME_ODV;
+    m_initialPositionDataInputFileType = UQ_MH_SG_INITIAL_POSITION_DATA_INPUT_FILE_TYPE_ODV;
+    m_initialProposalCovMatrixDataInputFileName = UQ_MH_SG_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_NAME_ODV;
+    m_initialProposalCovMatrixDataInputFileType = UQ_MH_SG_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_TYPE_ODV;
+  //m_parameterDisabledSet                     (),
+    m_rawChainDataInputFileName = UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV;
+    m_rawChainDataInputFileType = UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_TYPE_ODV;
+    m_rawChainSize = UQ_MH_SG_RAW_CHAIN_SIZE_ODV;
+    m_rawChainGenerateExtra = UQ_MH_SG_RAW_CHAIN_GENERATE_EXTRA_ODV;
+    m_rawChainDisplayPeriod = UQ_MH_SG_RAW_CHAIN_DISPLAY_PERIOD_ODV;
+    m_rawChainMeasureRunTimes = UQ_MH_SG_RAW_CHAIN_MEASURE_RUN_TIMES_ODV;
+    m_rawChainDataOutputPeriod = UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_PERIOD_ODV;
+    m_rawChainDataOutputFileName = UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV;
+    m_rawChainDataOutputFileType = UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV;
+    m_rawChainDataOutputAllowAll = UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_ALLOW_ALL_ODV;
+  //m_rawChainDataOutputAllowedSet             (),
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+    m_rawChainComputeStats = UQ_MH_SG_RAW_CHAIN_COMPUTE_STATS_ODV;
+#endif
+    m_filteredChainGenerate = UQ_MH_SG_FILTERED_CHAIN_GENERATE_ODV;
+    m_filteredChainDiscardedPortion = UQ_MH_SG_FILTERED_CHAIN_DISCARDED_PORTION_ODV;
+    m_filteredChainLag = UQ_MH_SG_FILTERED_CHAIN_LAG_ODV;
+    m_filteredChainDataOutputFileName = UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV;
+    m_filteredChainDataOutputFileType = UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV;
+    m_filteredChainDataOutputAllowAll = UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_ALLOW_ALL_ODV;
+  //m_filteredChainDataOutputAllowedSet        (),
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+    m_filteredChainComputeStats = UQ_MH_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV;
+#endif
+    m_displayCandidates = UQ_MH_SG_DISPLAY_CANDIDATES_ODV;
+    m_putOutOfBoundsInChain = UQ_MH_SG_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV;
+    m_tkUseLocalHessian = UQ_MH_SG_TK_USE_LOCAL_HESSIAN_ODV;
+    m_tkUseNewtonComponent = UQ_MH_SG_TK_USE_NEWTON_COMPONENT_ODV;
+    m_drMaxNumExtraStages = UQ_MH_SG_DR_MAX_NUM_EXTRA_STAGES_ODV;
+    m_drScalesForExtraStages.resize(0);
+    m_drDuringAmNonAdaptiveInt = UQ_MH_SG_DR_DURING_AM_NON_ADAPTIVE_INT_ODV;
+    m_amKeepInitialMatrix = UQ_MH_SG_AM_KEEP_INITIAL_MATRIX_ODV;
+    m_amInitialNonAdaptInterval = UQ_MH_SG_AM_INIT_NON_ADAPT_INT_ODV;
+    m_amAdaptInterval = UQ_MH_SG_AM_ADAPT_INTERVAL_ODV;
+    m_amAdaptedMatricesDataOutputPeriod = UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_PERIOD_ODV;
+    m_amAdaptedMatricesDataOutputFileName = UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_NAME_ODV;
+    m_amAdaptedMatricesDataOutputFileType = UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_TYPE_ODV;
+    m_amAdaptedMatricesDataOutputAllowAll = UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_ALLOW_ALL_ODV;
+  //m_amAdaptedMatricesDataOutputAllowedSet    (),
+    m_amEta = UQ_MH_SG_AM_ETA_ODV;
+    m_amEpsilon = UQ_MH_SG_AM_EPSILON_ODV;
+    m_enableBrooksGelmanConvMonitor = UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR;
+    m_BrooksGelmanLag = UQ_MH_SG_BROOKS_GELMAN_LAG;
+    m_outputLogLikelihood = UQ_MH_SG_OUTPUT_LOG_LIKELIHOOD;
+    m_outputLogTarget = UQ_MH_SG_OUTPUT_LOG_TARGET;
+    m_doLogitTransform = UQ_MH_SG_DO_LOGIT_TRANSFORM;
+    m_algorithm = UQ_MH_SG_ALGORITHM;
+    m_tk = UQ_MH_SG_TK;
+    m_updateInterval = UQ_MH_SG_UPDATE_INTERVAL;
+}
+
+void
+MhOptionsValues::parse(const BaseEnvironment& env, const std::string& prefix)
+{
+  m_env = &env;
+
+  this->set_prefix(prefix);
+
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
+  m_parser.reset(new BoostInputOptionsParser(env.optionsInputFileName()));
+
+  m_parser->registerOption<std::string >(m_option_help,                                       m_help,                                       "produce help msg for Bayesian Metropolis-Hastings"          );
+  m_parser->registerOption<std::string >(m_option_dataOutputFileName,                         m_dataOutputFileName,                         "name of generic output file"                                );
+  m_parser->registerOption<bool        >(m_option_dataOutputAllowAll,                         m_dataOutputAllowAll,                         "allow all subEnvs write to a generic output file"           );
+  m_parser->registerOption<std::string >(m_option_dataOutputAllowedSet,                       container_to_string(m_dataOutputAllowedSet),  "subEnvs that will write to generic output file"             );
+  m_parser->registerOption<bool        >(m_option_totallyMute,                                m_totallyMute,                                "totally mute (no printout msg)"                             );
+  m_parser->registerOption<std::string >(m_option_initialPosition_dataInputFileName,          m_initialPositionDataInputFileName,          "name of input file for raw chain "                          );
+  m_parser->registerOption<std::string >(m_option_initialPosition_dataInputFileType,          m_initialPositionDataInputFileType,          "type of input file for raw chain "                          );
+  m_parser->registerOption<std::string >(m_option_initialProposalCovMatrix_dataInputFileName, m_initialProposalCovMatrixDataInputFileName, "name of input file for raw chain "                          );
+  m_parser->registerOption<std::string >(m_option_initialProposalCovMatrix_dataInputFileType, m_initialProposalCovMatrixDataInputFileType, "type of input file for raw chain "                          );
+  m_parser->registerOption<std::string >(m_option_listOfDisabledParameters,                   container_to_string(m_parameterDisabledSet), "list of disabled parameters"                                );
+  m_parser->registerOption<std::string >(m_option_rawChain_dataInputFileName,                 m_rawChainDataInputFileName,                 "name of input file for raw chain "                          );
+  m_parser->registerOption<std::string >(m_option_rawChain_dataInputFileType,                 m_rawChainDataInputFileType,                 "type of input file for raw chain "                          );
+  m_parser->registerOption<unsigned int>(m_option_rawChain_size,                              m_rawChainSize,                              "size of raw chain"                                          );
+  m_parser->registerOption<bool        >(m_option_rawChain_generateExtra,                     m_rawChainGenerateExtra,                     "generate extra information about raw chain"                 );
+  m_parser->registerOption<unsigned int>(m_option_rawChain_displayPeriod,                     m_rawChainDisplayPeriod,                     "period of msg display during raw chain generation"          );
+  m_parser->registerOption<bool        >(m_option_rawChain_measureRunTimes,                   m_rawChainMeasureRunTimes,                   "measure run times"                                          );
+  m_parser->registerOption<unsigned int>(m_option_rawChain_dataOutputPeriod,                  m_rawChainDataOutputPeriod,                  "period of msg display during raw chain generation"          );
+  m_parser->registerOption<std::string >(m_option_rawChain_dataOutputFileName,                m_rawChainDataOutputFileName,                "name of output file for raw chain "                         );
+  m_parser->registerOption<std::string >(m_option_rawChain_dataOutputFileType,                m_rawChainDataOutputFileType,                "type of output file for raw chain "                         );
+  m_parser->registerOption<bool        >(m_option_rawChain_dataOutputAllowAll,                m_rawChainDataOutputAllowAll,                "allow all subEnvs to write raw chain to an output file"     );
+  m_parser->registerOption<std::string >(m_option_rawChain_dataOutputAllowedSet,              container_to_string(m_rawChainDataOutputAllowedSet), "subEnvs that will write raw chain to output file"           );
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+  m_parser->registerOption<bool        >(m_option_rawChain_computeStats,                      m_rawChain_computeStats,                      "compute statistics on raw chain"                            );
+#endif
+  m_parser->registerOption<bool        >(m_option_filteredChain_generate,                     m_filteredChainGenerate,                     "generate filtered chain"                                    );
+  m_parser->registerOption<double      >(m_option_filteredChain_discardedPortion,             m_filteredChainDiscardedPortion,             "initial discarded portion for chain filtering"              );
+  m_parser->registerOption<unsigned int>(m_option_filteredChain_lag,                          m_filteredChainLag,                          "spacing for chain filtering"                                );
+  m_parser->registerOption<std::string >(m_option_filteredChain_dataOutputFileName,           m_filteredChainDataOutputFileName,           "name of output file for filtered chain"                     );
+  m_parser->registerOption<std::string >(m_option_filteredChain_dataOutputFileType,           m_filteredChainDataOutputFileType,           "type of output file for filtered chain"                     );
+  m_parser->registerOption<bool        >(m_option_filteredChain_dataOutputAllowAll,           m_filteredChainDataOutputAllowAll,           "allow all subEnvs to write filt chain to an output file"    );
+  m_parser->registerOption<std::string >(m_option_filteredChain_dataOutputAllowedSet,         container_to_string(m_filteredChainDataOutputAllowedSet), "subEnvs that will write filt chain to output file"          );
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+  m_parser->registerOption<bool        >(m_option_filteredChain_computeStats,                 m_filteredChainComputeStats,                 "compute statistics on filtered chain"                       );
+#endif
+  m_parser->registerOption<bool        >(m_option_displayCandidates,                          m_displayCandidates,                          "display candidates in the core MH algorithm"                );
+  m_parser->registerOption<bool        >(m_option_putOutOfBoundsInChain,                      m_putOutOfBoundsInChain,                      "put 'out of bound' candidates in chain as well"             );
+  m_parser->registerOption<bool        >(m_option_tk_useLocalHessian,                         m_tkUseLocalHessian,                         "'proposal' use local Hessian"                               );
+  m_parser->registerOption<bool        >(m_option_tk_useNewtonComponent,                      m_tkUseNewtonComponent,                      "'proposal' use Newton component"                            );
+  m_parser->registerOption<unsigned int>(m_option_dr_maxNumExtraStages,                       m_drMaxNumExtraStages,                       "'dr' maximum number of extra stages"                        );
+  m_parser->registerOption<std::string >(m_option_dr_listOfScalesForExtraStages,              container_to_string(m_drScalesForExtraStages), "'dr' scales for prop cov matrices from 2nd stage on"        );
+  m_parser->registerOption<bool        >(m_option_dr_duringAmNonAdaptiveInt,                  m_drDuringAmNonAdaptiveInt,                  "'dr' used during 'am' non adaptive interval"                );
+  m_parser->registerOption<bool        >(m_option_am_keepInitialMatrix,                       m_amKeepInitialMatrix,                       "'am' keep initial (given) matrix"                           );
+  m_parser->registerOption<unsigned int>(m_option_am_initialNonAdaptInterval,                 m_amInitialNonAdaptInterval,                 "'am' initial non adaptation interval"                       );
+  m_parser->registerOption<unsigned int>(m_option_am_adaptInterval,                           m_amAdaptInterval,                           "'am' adaptation interval"                                   );
+  m_parser->registerOption<unsigned int>(m_option_am_adaptedMatrices_dataOutputPeriod,        m_amAdaptedMatricesDataOutputPeriod,        "period for outputting 'am' adapted matrices"                );
+  m_parser->registerOption<std::string >(m_option_am_adaptedMatrices_dataOutputFileName,      m_amAdaptedMatricesDataOutputFileName,      "name of output file for 'am' adapted matrices"              );
+  m_parser->registerOption<std::string >(m_option_am_adaptedMatrices_dataOutputFileType,      m_amAdaptedMatricesDataOutputFileType,      "type of output file for 'am' adapted matrices"              );
+  m_parser->registerOption<bool        >(m_option_am_adaptedMatrices_dataOutputAllowAll,      m_amAdaptedMatricesDataOutputAllowAll,      "type of output file for 'am' adapted matrices"              );
+  m_parser->registerOption<std::string >(m_option_am_adaptedMatrices_dataOutputAllowedSet,    container_to_string(m_amAdaptedMatricesDataOutputAllowedSet), "type of output file for 'am' adapted matrices"              );
+  m_parser->registerOption<double      >(m_option_am_eta,                                     m_amEta,                                     "'am' eta"                                                   );
+  m_parser->registerOption<double      >(m_option_am_epsilon,                                 m_amEpsilon,                                 "'am' epsilon"                                               );
+  m_parser->registerOption<unsigned int>(m_option_enableBrooksGelmanConvMonitor,              m_enableBrooksGelmanConvMonitor,              "assess convergence using Brooks-Gelman metric"              );
+  m_parser->registerOption<unsigned int>(m_option_BrooksGelmanLag,                            m_BrooksGelmanLag,                            "number of chain positions before starting to compute metric");
+  m_parser->registerOption<bool        >(m_option_outputLogLikelihood,                        m_outputLogLikelihood,                        "flag to toggle output of log likelihood values"             );
+  m_parser->registerOption<bool        >(m_option_outputLogTarget,                            m_outputLogTarget,                            "flag to toggle output of log target values"                 );
+  m_parser->registerOption<bool        >(m_option_doLogitTransform,                           m_doLogitTransform,                           "flag to toggle logit transform for bounded domains"         );
+  m_parser->registerOption<std::string >(m_option_algorithm,                                  m_algorithm,                                  "which MCMC algorithm to use"                                );
+  m_parser->registerOption<std::string >(m_option_tk,                                         m_tk,                                         "which MCMC transition kernel to use"                        );
+  m_parser->registerOption<unsigned int>(m_option_updateInterval,                             m_updateInterval,                             "how often to call updateTK method"                          );
+
+  m_parser->scanInputFile();
+
+  m_parser->getOption<std::string >(m_option_help,                                       m_help);
+  m_parser->getOption<std::string >(m_option_dataOutputFileName,                         m_dataOutputFileName);
+  m_parser->getOption<bool        >(m_option_dataOutputAllowAll,                         m_dataOutputAllowAll);
+  m_parser->getOption<std::set<unsigned int> >(m_option_dataOutputAllowedSet,            m_dataOutputAllowedSet);
+  m_parser->getOption<bool        >(m_option_totallyMute,                                m_totallyMute);
+  m_parser->getOption<std::string >(m_option_initialPosition_dataInputFileName,          m_initialPositionDataInputFileName);
+  m_parser->getOption<std::string >(m_option_initialPosition_dataInputFileType,          m_initialPositionDataInputFileType);
+  m_parser->getOption<std::string >(m_option_initialProposalCovMatrix_dataInputFileName, m_initialProposalCovMatrixDataInputFileName);
+  m_parser->getOption<std::string >(m_option_initialProposalCovMatrix_dataInputFileType, m_initialProposalCovMatrixDataInputFileType);
+  m_parser->getOption<std::set<unsigned int> >(m_option_listOfDisabledParameters,        m_parameterDisabledSet);
+  m_parser->getOption<std::string >(m_option_rawChain_dataInputFileName,                 m_rawChainDataInputFileName);
+  m_parser->getOption<std::string >(m_option_rawChain_dataInputFileType,                 m_rawChainDataInputFileType);
+  m_parser->getOption<unsigned int>(m_option_rawChain_size,                              m_rawChainSize);
+  m_parser->getOption<bool        >(m_option_rawChain_generateExtra,                     m_rawChainGenerateExtra);
+  m_parser->getOption<unsigned int>(m_option_rawChain_displayPeriod,                     m_rawChainDisplayPeriod);
+  m_parser->getOption<bool        >(m_option_rawChain_measureRunTimes,                   m_rawChainMeasureRunTimes);
+  m_parser->getOption<unsigned int>(m_option_rawChain_dataOutputPeriod,                  m_rawChainDataOutputPeriod);
+  m_parser->getOption<std::string >(m_option_rawChain_dataOutputFileName,                m_rawChainDataOutputFileName);
+  m_parser->getOption<std::string >(m_option_rawChain_dataOutputFileType,                m_rawChainDataOutputFileType);
+  m_parser->getOption<bool        >(m_option_rawChain_dataOutputAllowAll,                m_rawChainDataOutputAllowAll);
+  m_parser->getOption<std::set<unsigned int> >(m_option_rawChain_dataOutputAllowedSet,   m_rawChainDataOutputAllowedSet);
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+  m_parser->getOption<bool        >(m_option_rawChain_computeStats,                      m_rawChain_computeStats);
+#endif
+  m_parser->getOption<bool        >(m_option_filteredChain_generate,                     m_filteredChainGenerate);
+  m_parser->getOption<double      >(m_option_filteredChain_discardedPortion,             m_filteredChainDiscardedPortion);
+  m_parser->getOption<unsigned int>(m_option_filteredChain_lag,                          m_filteredChainLag);
+  m_parser->getOption<std::string >(m_option_filteredChain_dataOutputFileName,           m_filteredChainDataOutputFileName);
+  m_parser->getOption<std::string >(m_option_filteredChain_dataOutputFileType,           m_filteredChainDataOutputFileType);
+  m_parser->getOption<bool        >(m_option_filteredChain_dataOutputAllowAll,           m_filteredChainDataOutputAllowAll);
+  m_parser->getOption<std::set<unsigned int> >(m_option_filteredChain_dataOutputAllowedSet,         m_filteredChainDataOutputAllowedSet);
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+  m_parser->getOption<bool        >(m_option_filteredChain_computeStats,                 m_filteredChain_computeStats);
+#endif
+  m_parser->getOption<bool        >(m_option_displayCandidates,                          m_displayCandidates);
+  m_parser->getOption<bool        >(m_option_putOutOfBoundsInChain,                      m_putOutOfBoundsInChain);
+  m_parser->getOption<bool        >(m_option_tk_useLocalHessian,                         m_tkUseLocalHessian);
+  m_parser->getOption<bool        >(m_option_tk_useNewtonComponent,                      m_tkUseNewtonComponent);
+  m_parser->getOption<unsigned int>(m_option_dr_maxNumExtraStages,                       m_drMaxNumExtraStages);
+  m_parser->getOption<std::vector<double> >(m_option_dr_listOfScalesForExtraStages,      m_drScalesForExtraStages);
+  m_parser->getOption<bool        >(m_option_dr_duringAmNonAdaptiveInt,                  m_drDuringAmNonAdaptiveInt);
+  m_parser->getOption<bool        >(m_option_am_keepInitialMatrix,                       m_amKeepInitialMatrix);
+  m_parser->getOption<unsigned int>(m_option_am_initialNonAdaptInterval,                 m_amInitialNonAdaptInterval);
+  m_parser->getOption<unsigned int>(m_option_am_adaptInterval,                           m_amAdaptInterval);
+  m_parser->getOption<unsigned int>(m_option_am_adaptedMatrices_dataOutputPeriod,        m_amAdaptedMatricesDataOutputPeriod);
+  m_parser->getOption<std::string >(m_option_am_adaptedMatrices_dataOutputFileName,      m_amAdaptedMatricesDataOutputFileName);
+  m_parser->getOption<std::string >(m_option_am_adaptedMatrices_dataOutputFileType,      m_amAdaptedMatricesDataOutputFileType);
+  m_parser->getOption<bool        >(m_option_am_adaptedMatrices_dataOutputAllowAll,      m_amAdaptedMatricesDataOutputAllowAll);
+  m_parser->getOption<std::set<unsigned int> >(m_option_am_adaptedMatrices_dataOutputAllowedSet,    m_amAdaptedMatricesDataOutputAllowedSet);
+  m_parser->getOption<double      >(m_option_am_eta,                                     m_amEta);
+  m_parser->getOption<double      >(m_option_am_epsilon,                                 m_amEpsilon);
+  m_parser->getOption<unsigned int>(m_option_enableBrooksGelmanConvMonitor,              m_enableBrooksGelmanConvMonitor);
+  m_parser->getOption<unsigned int>(m_option_BrooksGelmanLag,                            m_BrooksGelmanLag);
+  m_parser->getOption<bool        >(m_option_outputLogLikelihood,                        m_outputLogLikelihood);
+  m_parser->getOption<bool        >(m_option_outputLogTarget,                            m_outputLogTarget);
+  m_parser->getOption<bool        >(m_option_doLogitTransform,                           m_doLogitTransform);
+  m_parser->getOption<std::string >(m_option_algorithm,                                  m_algorithm);
+  m_parser->getOption<std::string >(m_option_tk,                                         m_tk);
+  m_parser->getOption<unsigned int>(m_option_updateInterval,                             m_updateInterval);
+#else
+  m_help = m_env->input()(m_option_help, m_help);
+  m_dataOutputFileName = m_env->input()(m_option_dataOutputFileName, m_dataOutputFileName);
+  m_dataOutputAllowAll = m_env->input()(m_option_dataOutputAllowAll, m_dataOutputAllowAll);
+
+  // UQ_MH_SG_DATA_OUTPUT_ALLOWED_SET_ODV is the empty set (string) by default
+  unsigned int size = m_env->input().vector_variable_size(m_option_dataOutputAllowedSet);
+  for (unsigned int i = 0; i < size; i++) {
+    // We default to empty set, so the default values are actually never used
+    // here
+    unsigned int allowed = m_env->input()(m_option_dataOutputAllowedSet, i, i);
+    m_dataOutputAllowedSet.insert(allowed);
+  }
+
+  m_totallyMute = m_env->input()(m_option_totallyMute, m_totallyMute);
+  m_initialPositionDataInputFileName = m_env->input()(m_option_initialPosition_dataInputFileName, m_initialPositionDataInputFileName);
+  m_initialPositionDataInputFileType = m_env->input()(m_option_initialPosition_dataInputFileType, m_initialPositionDataInputFileType);
+  m_initialProposalCovMatrixDataInputFileName = m_env->input()(m_option_initialProposalCovMatrix_dataInputFileName, m_initialProposalCovMatrixDataInputFileName);
+  m_initialProposalCovMatrixDataInputFileType = m_env->input()(m_option_initialProposalCovMatrix_dataInputFileType, m_initialProposalCovMatrixDataInputFileType);
+
+  // UQ_MH_SG_LIST_OF_DISABLED_PARAMETERS_ODV is the empty set (string) by
+  // default
+  size = m_env->input().vector_variable_size(m_option_listOfDisabledParameters);
+  for (unsigned int i = 0; i < size; i++) {
+    // We default to empty set, so the default values are actually never used
+    // here
+    unsigned int disabled = m_env->input()(m_option_listOfDisabledParameters, i, i);
+    m_parameterDisabledSet.insert(disabled);
+  }
+
+  m_rawChainDataInputFileName = m_env->input()(m_option_rawChain_dataInputFileName, m_rawChainDataInputFileName);
+  m_rawChainDataInputFileType = m_env->input()(m_option_rawChain_dataInputFileType, m_rawChainDataInputFileType);
+  m_rawChainSize = m_env->input()(m_option_rawChain_size, m_rawChainSize);
+  m_rawChainGenerateExtra = m_env->input()(m_option_rawChain_generateExtra, m_rawChainGenerateExtra);
+  m_rawChainDisplayPeriod = m_env->input()(m_option_rawChain_displayPeriod, m_rawChainDisplayPeriod);
+  m_rawChainMeasureRunTimes = m_env->input()(m_option_rawChain_measureRunTimes, m_rawChainMeasureRunTimes);
+  m_rawChainDataOutputPeriod = m_env->input()(m_option_rawChain_dataOutputPeriod, m_rawChainDataOutputPeriod);
+  m_rawChainDataOutputFileName = m_env->input()(m_option_rawChain_dataOutputFileName, m_rawChainDataOutputFileName);
+  m_rawChainDataOutputFileType = m_env->input()(m_option_rawChain_dataOutputFileType, m_rawChainDataOutputFileType);
+  m_rawChainDataOutputAllowAll = m_env->input()(m_option_rawChain_dataOutputAllowAll, m_rawChainDataOutputAllowAll);
+
+  // UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV is the empty set (string) by default
+  size = m_env->input().vector_variable_size(m_option_rawChain_dataOutputAllowedSet);
+  for (unsigned int i = 0; i < size; i++) {
+    // We default to empty set, so the default values are actually never used
+    // here
+    unsigned int allowed = m_env->input()(m_option_rawChain_dataOutputAllowedSet, i, i);
+    m_rawChainDataOutputAllowedSet.insert(allowed);
+  }
+
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+  m_rawChain_computeStats = m_env->input()(m_option_rawChain_computeStats, m_rawChainComputeStats);
+#endif
+  m_filteredChainGenerate = m_env->input()(m_option_filteredChain_generate, m_filteredChainGenerate);
+  m_filteredChainDiscardedPortion = m_env->input()(m_option_filteredChain_discardedPortion, m_filteredChainDiscardedPortion);
+  m_filteredChainLag = m_env->input()(m_option_filteredChain_lag, m_filteredChainLag);
+  m_filteredChainDataOutputFileName = m_env->input()(m_option_filteredChain_dataOutputFileName, m_filteredChainDataOutputFileName);
+  m_filteredChainDataOutputFileType = m_env->input()(m_option_filteredChain_dataOutputFileType, m_filteredChainDataOutputFileType);
+  m_filteredChainDataOutputAllowAll = m_env->input()(m_option_filteredChain_dataOutputAllowAll, m_filteredChainDataOutputAllowAll);
+
+  // UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV is the empty set (string) by default
+  size = m_env->input().vector_variable_size(m_option_filteredChain_dataOutputAllowedSet);
+  for (unsigned int i = 0; i < size; i++) {
+    // We default to empty set, so the default values are actually never used
+    // here
+    unsigned int allowed = m_env->input()(m_option_filteredChain_dataOutputAllowedSet, i, i);
+    m_filteredChainDataOutputAllowedSet.insert(allowed);
+  }
+
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+  m_filteredChain_computeStats = m_env->input()(m_option_filteredChain_computeStats, m_filteredChainComputeStats);
+#endif
+  m_displayCandidates = m_env->input()(m_option_displayCandidates, m_displayCandidates);
+  m_putOutOfBoundsInChain = m_env->input()(m_option_putOutOfBoundsInChain, m_putOutOfBoundsInChain);
+  m_tkUseLocalHessian = m_env->input()(m_option_tk_useLocalHessian, m_tkUseLocalHessian);
+  m_tkUseNewtonComponent = m_env->input()(m_option_tk_useNewtonComponent, m_tkUseNewtonComponent);
+  m_drMaxNumExtraStages = m_env->input()(m_option_dr_maxNumExtraStages, m_drMaxNumExtraStages);
+
+  // UQ_MH_SG_DR_LIST_OF_SCALES_FOR_EXTRA_STAGES_ODV is the empty set (string) by default
+  size = m_env->input().vector_variable_size(m_option_dr_listOfScalesForExtraStages);
+  for (unsigned int i = 0; i < size; i++) {
+    // We default to empty set, so the default values are actually never used
+    // here
+    unsigned int allowed = m_env->input()(m_option_dr_listOfScalesForExtraStages, i, i);
+    m_drScalesForExtraStages.push_back(allowed);
+  }
+
+  m_drDuringAmNonAdaptiveInt = m_env->input()(m_option_dr_duringAmNonAdaptiveInt, m_drDuringAmNonAdaptiveInt);
+  m_amKeepInitialMatrix = m_env->input()(m_option_am_keepInitialMatrix, m_amKeepInitialMatrix);
+  m_amInitialNonAdaptInterval = m_env->input()(m_option_am_initialNonAdaptInterval, m_amInitialNonAdaptInterval);
+  m_amAdaptInterval = m_env->input()(m_option_am_adaptInterval, m_amAdaptInterval);
+  m_amAdaptedMatricesDataOutputPeriod = m_env->input()(m_option_am_adaptedMatrices_dataOutputPeriod, m_amAdaptedMatricesDataOutputPeriod);
+  m_amAdaptedMatricesDataOutputFileName = m_env->input()(m_option_am_adaptedMatrices_dataOutputFileName, m_amAdaptedMatricesDataOutputFileName);
+  m_amAdaptedMatricesDataOutputFileType = m_env->input()(m_option_am_adaptedMatrices_dataOutputFileType, m_amAdaptedMatricesDataOutputFileType);
+  m_amAdaptedMatricesDataOutputAllowAll = m_env->input()(m_option_am_adaptedMatrices_dataOutputAllowAll, m_amAdaptedMatricesDataOutputAllowAll);
+
+  // UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_ALLOWED_SET_ODV is the empty set (string) by default
+  size = m_env->input().vector_variable_size(m_option_am_adaptedMatrices_dataOutputAllowedSet);
+  for (unsigned int i = 0; i < size; i++) {
+    // We default to empty set, so the default values are actually never used
+    // here
+    unsigned int allowed = m_env->input()(m_option_am_adaptedMatrices_dataOutputAllowedSet, i, i);
+    m_amAdaptedMatricesDataOutputAllowedSet.insert(allowed);
+  }
+
+  m_amEta = m_env->input()(m_option_am_eta, m_amEta);
+  m_amEpsilon = m_env->input()(m_option_am_epsilon, m_amEpsilon);
+  m_enableBrooksGelmanConvMonitor = m_env->input()(m_option_enableBrooksGelmanConvMonitor, m_enableBrooksGelmanConvMonitor);
+  m_BrooksGelmanLag = m_env->input()(m_option_BrooksGelmanLag, m_BrooksGelmanLag);
+  m_outputLogLikelihood = m_env->input()(m_option_outputLogLikelihood, m_outputLogLikelihood);
+  m_outputLogTarget = m_env->input()(m_option_outputLogTarget, m_outputLogTarget);
+  m_doLogitTransform = m_env->input()(m_option_doLogitTransform, m_doLogitTransform);
+  m_algorithm = m_env->input()(m_option_algorithm, m_algorithm);
+  m_tk = m_env->input()(m_option_tk, m_tk);
+  m_updateInterval = m_env->input()(m_option_updateInterval, m_updateInterval);
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
+
+  checkOptions();
+
+}
 
 }  // End namespace QUESO

@@ -47,8 +47,20 @@ namespace QUESO {
 class InfiniteDimensionalMCMCSamplerOptions
 {
 public:
+  //! Constructor
+  InfiniteDimensionalMCMCSamplerOptions();
+
   //! Given prefix, read the input file for parameters named prefix_*
   InfiniteDimensionalMCMCSamplerOptions(const BaseEnvironment& env, const char* prefix);
+
+  //! Set default values for parameter options
+  void set_defaults();
+
+  //! Set parameter option names to begin with prefix
+  void set_prefix(const std::string& prefix);
+
+  //! Given prefix, read the input file for parameters named "prefix"+*
+  void parse(const BaseEnvironment& env, const std::string& prefix);
 
   //! Destructor
   virtual ~InfiniteDimensionalMCMCSamplerOptions();
@@ -86,10 +98,10 @@ public:
 
 private:
 #ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
-  BoostInputOptionsParser * m_parser;
+  ScopedPtr<BoostInputOptionsParser>::Type m_parser;
 #endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
 
-  const BaseEnvironment& m_env;
+  const BaseEnvironment* m_env;
 
   std::string m_option_help;
   std::string m_option_dataOutputDirName;

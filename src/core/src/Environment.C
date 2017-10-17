@@ -150,7 +150,7 @@ FilePtrSetStruct::~FilePtrSetStruct()
 // Default constructor --------------------------------
 BaseEnvironment::BaseEnvironment(
   const char*                    passedOptionsInputFileName,
-  EnvOptionsValues* alternativeOptionsValues)
+  EnvOptionsValues* initialOptionsValues)
   :
   m_fullEnvIsReady             (false),
   m_worldRank                  (-1),
@@ -182,14 +182,19 @@ BaseEnvironment::BaseEnvironment(
   // If the user passed in an options object pointer, we really shouldn't let
   // ScopedPtr delete their object, so we make a copy.  That way, the dtor
   // will kill this local copy and leave the user's object in tact.
-  if (alternativeOptionsValues != NULL) {
-    m_optionsObj.reset(new EnvOptionsValues(*alternativeOptionsValues));
+  if (initialOptionsValues != NULL) {
+    m_optionsObj.reset(new EnvOptionsValues(*initialOptionsValues));
+  }
+  else {
+    // BMA 20170925: Changed this to default construct the options when none
+    // are passed in, so downstream checks for != NULL may behave differently
+    m_optionsObj.reset(new EnvOptionsValues());
   }
 }
 
 BaseEnvironment::BaseEnvironment(
   const std::string&             passedOptionsInputFileName,
-  EnvOptionsValues* alternativeOptionsValues)
+  EnvOptionsValues* initialOptionsValues)
   :
   m_fullEnvIsReady             (false),
   m_worldRank                  (-1),
@@ -219,8 +224,13 @@ BaseEnvironment::BaseEnvironment(
   // If the user passed in an options object pointer, we really shouldn't let
   // ScopedPtr delete their object, so we make a copy.  That way, the dtor
   // will kill this local copy and leave the user's object in tact.
-  if (alternativeOptionsValues != NULL) {
-    m_optionsObj.reset(new EnvOptionsValues(*alternativeOptionsValues));
+  if (initialOptionsValues != NULL) {
+    m_optionsObj.reset(new EnvOptionsValues(*initialOptionsValues));
+  }
+  else {
+    // BMA 20170925: Changed this to default construct the options when none
+    // are passed in, so downstream checks for != NULL may behave differently
+    m_optionsObj.reset(new EnvOptionsValues());
   }
 }
 
@@ -332,8 +342,7 @@ BaseEnvironment::subDisplayFile() const
 std::string
 BaseEnvironment::subDisplayFileName() const
 {
-  if (m_optionsObj == NULL) return ".";
-
+  queso_require_msg(m_optionsObj, "m_optionsObj variable is NULL");
   return m_optionsObj->m_subDisplayFileName;
 }
 //-------------------------------------------------------
@@ -501,18 +510,21 @@ BaseEnvironment::basicPdfs() const
 std::string
 BaseEnvironment::platformName() const
 {
+  queso_require_msg(m_optionsObj, "m_optionsObj variable is NULL");
   return m_optionsObj->m_platformName;
 }
 //-------------------------------------------------------
 std::string
 BaseEnvironment::identifyingString() const
 {
+  queso_require_msg(m_optionsObj, "m_optionsObj variable is NULL");
   return m_optionsObj->m_identifyingString;
 }
 //-------------------------------------------------------
 void
 BaseEnvironment::resetIdentifyingString(const std::string& newString)
 {
+  queso_require_msg(m_optionsObj, "m_optionsObj variable is NULL");
   m_optionsObj->m_identifyingString = newString;
   return;
 }
@@ -1200,9 +1212,9 @@ FullEnvironment::FullEnvironment(
   RawType_MPI_Comm             inputComm,
   const char*                    passedOptionsInputFileName,
   const char*                    prefix,
-  EnvOptionsValues* alternativeOptionsValues)
+  EnvOptionsValues* initialOptionsValues)
   :
-  BaseEnvironment(passedOptionsInputFileName,alternativeOptionsValues)
+  BaseEnvironment(passedOptionsInputFileName,initialOptionsValues)
 {
   this->construct(inputComm, prefix);
 }
@@ -1211,9 +1223,9 @@ FullEnvironment::FullEnvironment(
   RawType_MPI_Comm             inputComm,
   const std::string&           passedOptionsInputFileName,
   const std::string&           prefix,
-  EnvOptionsValues* alternativeOptionsValues)
+  EnvOptionsValues* initialOptionsValues)
   :
-  BaseEnvironment(passedOptionsInputFileName,alternativeOptionsValues)
+  BaseEnvironment(passedOptionsInputFileName,initialOptionsValues)
 {
   this->construct(inputComm, prefix.c_str());
 }
@@ -1247,26 +1259,9 @@ FullEnvironment::construct (RawType_MPI_Comm inputComm,
   std::cout << "In FullEnv, finished dealing with MPI initially" << std::endl;
 #endif
 
-  //////////////////////////////////////////////////
   // Read options
-  //////////////////////////////////////////////////
-  // If NULL, we create one
-  if (m_optionsObj == NULL) {
-    // If there's an input file, we grab the options from there.  Otherwise the
-    // defaults are used
-    if (m_optionsInputFileName != "") {
-#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
-      m_allOptionsMap.reset(new boost::program_options::variables_map());
-      m_allOptionsDesc.reset(new boost::program_options::options_description("Allowed options"));
-#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
-
-      readOptionsInputFile();
-
-      m_input->parse_input_file(m_optionsInputFileName);
-    }
-
-    m_optionsObj.reset(new EnvOptionsValues(this, prefix));
-  }
+  if (!m_optionsInputFileName.empty())
+    readOptionsInputFile(prefix);
 
   // If help option was supplied, print info
   if (m_optionsObj->m_help != "") {
@@ -1491,9 +1486,9 @@ FullEnvironment::construct (RawType_MPI_Comm inputComm,
 FullEnvironment::FullEnvironment(
   const char*                    passedOptionsInputFileName,
   const char*                    prefix,
-  EnvOptionsValues* alternativeOptionsValues)
+  EnvOptionsValues* initialOptionsValues)
   :
-  BaseEnvironment(passedOptionsInputFileName,alternativeOptionsValues)
+  BaseEnvironment(passedOptionsInputFileName,initialOptionsValues)
 {
   this->construct(prefix);
 }
@@ -1501,9 +1496,9 @@ FullEnvironment::FullEnvironment(
 FullEnvironment::FullEnvironment(
   const std::string&             passedOptionsInputFileName,
   const std::string&             prefix,
-  EnvOptionsValues* alternativeOptionsValues)
+  EnvOptionsValues* initialOptionsValues)
   :
-  BaseEnvironment(passedOptionsInputFileName,alternativeOptionsValues)
+  BaseEnvironment(passedOptionsInputFileName,initialOptionsValues)
 {
   this->construct(prefix.c_str());
 }
@@ -1511,6 +1506,7 @@ FullEnvironment::FullEnvironment(
 void
 FullEnvironment::construct (const char *prefix)
 {
+
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "Entering FullEnv" << std::endl;
 #endif
@@ -1532,26 +1528,9 @@ FullEnvironment::construct (const char *prefix)
   std::cout << "In FullEnv, finished dealing with MPI initially" << std::endl;
 #endif
 
-  //////////////////////////////////////////////////
   // Read options
-  //////////////////////////////////////////////////
-  // If NULL, we create one
-  if (m_optionsObj == NULL) {
-    // If there's an input file, we grab the options from there.  Otherwise the
-    // defaults are used
-    if (m_optionsInputFileName != "") {
-#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
-      m_allOptionsMap.reset(new boost::program_options::variables_map());
-      m_allOptionsDesc.reset(new boost::program_options::options_description("Allowed options"));
-#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
-
-      readOptionsInputFile();
-
-      m_input->parse_input_file(m_optionsInputFileName);
-    }
-
-    m_optionsObj.reset(new EnvOptionsValues(this, prefix));
-  }
+  if (!m_optionsInputFileName.empty())
+    readOptionsInputFile(prefix);
 
   // If help option was supplied, print info
   if (m_optionsObj->m_help != "") {
@@ -1781,10 +1760,10 @@ void queso_terminate_handler()
 }
 
 
-//-------------------------------------------------------
 void
-FullEnvironment::readOptionsInputFile()
+FullEnvironment::readOptionsInputFile(const std::string& prefix)
 {
+  // Check file for readability for both Boost and GetPot cases
   std::ifstream* ifs = new std::ifstream(m_optionsInputFileName.c_str());
   if (ifs->is_open()) {
     //ifs->close();
@@ -1803,6 +1782,18 @@ FullEnvironment::readOptionsInputFile()
                                    << std::endl;
     queso_error();
   }
+
+  // prepare BPO data structures
+#ifndef QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
+  m_allOptionsMap.reset(new boost::program_options::variables_map());
+  m_allOptionsDesc.reset(new boost::program_options::options_description("Allowed options"));
+#endif  // QUESO_DISABLE_BOOST_PROGRAM_OPTIONS
+
+  // perform the GetPot parse
+  m_input->parse_input_file(m_optionsInputFileName);
+
+  // allow input file options to override current options class values
+  m_optionsObj->parse(*this, prefix);
 
   return;
 }
