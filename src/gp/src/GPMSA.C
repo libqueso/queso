@@ -171,15 +171,16 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
   unsigned int dimParameter = (this->m_parameterSpace).dimLocal();
 
   // Length of prior+hyperprior inputs
-  unsigned int dimSum = 1 +
+  unsigned int dimSum = num_svd_terms +
                         (this->num_svd_terms < num_nonzero_eigenvalues) +
                         m_opts.m_calibrateObservationalPrecision +
                         num_svd_terms +
                         dimParameter +
-                        dimParameter +
-                        dimScenario +
+                        num_svd_terms * (dimParameter + dimScenario) +
                         num_discrepancy_groups +
                         (num_discrepancy_groups * dimScenario);  // yum
+
+  queso_assert_equal_to(dimSum, domainVector.sizeLocal());
 
   // Offset for Sigma_eta equivalent in vector case
   const unsigned int offset1 = (numSimulationOutputs == 1) ?
@@ -245,48 +246,50 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
           (this->m_simulationParameters)[j-this->m_numExperiments];
       }
 
-      // Emulator component       // = first term in (1)
-      prodScenario = 1.0;
       unsigned int emulatorCorrStrStart =
         dimParameter + (this->num_svd_terms < num_nonzero_eigenvalues) + num_svd_terms;
-      for (unsigned int k = 0; k < dimScenario; k++) {
-        const double & emulator_corr_strength =
-          domainVector[emulatorCorrStrStart+k];
-        double scenario_param1 =
-          m_opts.normalized_scenario_parameter(k, (*scenario1)[k]);
-        double scenario_param2 =
-          m_opts.normalized_scenario_parameter(k, (*scenario2)[k]);
-        prodScenario *= std::pow(emulator_corr_strength,
-                                 4.0 * (scenario_param1 - scenario_param2) *
-                                       (scenario_param1 - scenario_param2));
-      }
-
-      queso_assert (!queso_isnan(prodScenario));
-
-      // = second term in (1)
-      prodParameter = 1.0;
-      for (unsigned int k = 0; k < dimParameter; k++) {
-        queso_assert (!queso_isnan(domainVector[emulatorCorrStrStart+dimScenario+k]));
-        queso_assert (!queso_isnan((*parameter1)[k]));
-        queso_assert (!queso_isnan((*parameter2)[k]));
-        const double & emulator_corr_strength =
-          domainVector[emulatorCorrStrStart+dimScenario+k];
-        double uncertain_param1 =
-          m_opts.normalized_uncertain_parameter(k, (*parameter1)[k]);
-        double uncertain_param2 =
-          m_opts.normalized_uncertain_parameter(k, (*parameter2)[k]);
-        prodParameter *= std::pow(
-            emulator_corr_strength,
-            4.0 * (uncertain_param1 - uncertain_param2) *
-                  (uncertain_param1 - uncertain_param2));
-      }
-
-      queso_assert (!queso_isnan(prodParameter));
 
       // Sigma_eta in scalar case,
       // [Sigma_u, Sigma_uw; Sigma_uw^T, Sigma_w] in vector case
       for (unsigned int basis = 0; basis != num_svd_terms; ++basis)
         {
+
+          // Emulator component       // = first term in (1)
+          prodScenario = 1.0;
+          for (unsigned int k = 0; k < dimScenario; k++) {
+            const double & emulator_corr_strength =
+              domainVector[emulatorCorrStrStart+(dimScenario+dimParameter)*basis+k];
+            double scenario_param1 =
+              m_opts.normalized_scenario_parameter(k, (*scenario1)[k]);
+            double scenario_param2 =
+              m_opts.normalized_scenario_parameter(k, (*scenario2)[k]);
+            prodScenario *= std::pow(emulator_corr_strength,
+                                     4.0 * (scenario_param1 - scenario_param2) *
+                                           (scenario_param1 - scenario_param2));
+          }
+
+          queso_assert (!queso_isnan(prodScenario));
+
+          // = second term in (1)
+          prodParameter = 1.0;
+          for (unsigned int k = 0; k < dimParameter; k++) {
+            queso_assert (!queso_isnan(domainVector[emulatorCorrStrStart+(dimScenario+dimParameter)*basis+dimScenario+k]));
+            queso_assert (!queso_isnan((*parameter1)[k]));
+            queso_assert (!queso_isnan((*parameter2)[k]));
+            const double & emulator_corr_strength =
+              domainVector[emulatorCorrStrStart+(dimScenario+dimParameter)*basis+dimScenario+k];
+            double uncertain_param1 =
+              m_opts.normalized_uncertain_parameter(k, (*parameter1)[k]);
+            double uncertain_param2 =
+              m_opts.normalized_uncertain_parameter(k, (*parameter2)[k]);
+            prodParameter *= std::pow(
+                emulator_corr_strength,
+                4.0 * (uncertain_param1 - uncertain_param2) *
+                      (uncertain_param1 - uncertain_param2));
+          }
+
+          queso_assert (!queso_isnan(prodParameter));
+
           // coefficient in (1)
           // The relevant precision for Sigma_eta is lambda_eta; for
           // Sigma_uw etc. it's lambda_wi and we skip lambda_eta
@@ -315,7 +318,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
         typename SharedPtr<V>::Type cross_scenario1 = (this->m_experimentScenarios)[i];
         typename SharedPtr<V>::Type cross_scenario2 = (this->m_experimentScenarios)[j];
         unsigned int discrepancyCorrStrStart =
-          dimParameter + num_svd_terms + dimParameter + dimScenario + num_discrepancy_groups +
+          dimParameter + num_svd_terms + (dimParameter + dimScenario) * num_svd_terms + num_discrepancy_groups +
           (this->num_svd_terms<num_nonzero_eigenvalues);
 
         // Loop over discrepancy groups.  Keep track of which
@@ -346,8 +349,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
           unsigned int discrepancyPrecisionStart = dimParameter +
                                                    (num_svd_terms<num_nonzero_eigenvalues) +
                                                    num_svd_terms +
-                                                   dimScenario +
-                                                   dimParameter;
+                                                   (dimScenario + dimParameter) * num_svd_terms;
 
           const double discrepancy_precision =
             domainVector[discrepancyPrecisionStart+disc_grp];
@@ -1555,7 +1557,7 @@ GPMSAFactory<V, M>::setUpHyperpriors(const M & Wy)
     (new VectorSpace<V, M>
      (this->m_env,
       "",
-      dimScenario + dimParameter,
+      (dimScenario + dimParameter) * num_svd_terms,
       NULL));
 
   this->emulatorCorrelationMin.reset
@@ -1686,14 +1688,21 @@ GPMSAFactory<V, M>::setUpHyperpriors(const M & Wy)
       *(this->m_discrepancyCorrelationStrengthBetaVec)));
 
   // Emulator data precision
+  this->emulatorDataPrecisionSpace.reset
+    (new VectorSpace<V, M>
+     (this->m_env,
+      "",
+      num_svd_terms,
+      NULL));
+
   this->emulatorDataPrecisionMin.reset
-    (new V(this->oneDSpace->zeroVector()));
+    (new V(this->emulatorDataPrecisionSpace->zeroVector()));
   this->emulatorDataPrecisionMax.reset
-    (new V(this->oneDSpace->zeroVector()));
+    (new V(this->emulatorDataPrecisionSpace->zeroVector()));
   this->m_emulatorDataPrecisionShapeVec.reset
-    (new V(this->oneDSpace->zeroVector()));
+    (new V(this->emulatorDataPrecisionSpace->zeroVector()));
   this->m_emulatorDataPrecisionScaleVec.reset
-    (new V(this->oneDSpace->zeroVector()));
+    (new V(this->emulatorDataPrecisionSpace->zeroVector()));
   this->emulatorDataPrecisionMin->cwSet(60.0);
   this->emulatorDataPrecisionMax->cwSet(1e5);
   this->m_emulatorDataPrecisionShapeVec->cwSet(emulatorDataPrecisionShape);
@@ -1702,7 +1711,7 @@ GPMSAFactory<V, M>::setUpHyperpriors(const M & Wy)
   this->emulatorDataPrecisionDomain.reset
     (new BoxSubset<V, M>
      ("",
-      *(this->oneDSpace),
+      *(this->emulatorDataPrecisionSpace),
       *(this->emulatorDataPrecisionMin),
       *(this->emulatorDataPrecisionMax)));
 
@@ -1715,12 +1724,11 @@ GPMSAFactory<V, M>::setUpHyperpriors(const M & Wy)
 
   // Now form full prior
   const unsigned int dimHyper =
-    1 +
+    num_svd_terms +
     (this->num_svd_terms < num_nonzero_eigenvalues) +
     this->m_opts->m_calibrateObservationalPrecision +
     num_svd_terms +
-    dimParameter +
-    dimScenario +
+    (dimParameter + dimScenario) * num_svd_terms +
     num_discrepancy_groups +
     (num_discrepancy_groups*dimScenario);  // yum
 
@@ -1755,8 +1763,7 @@ GPMSAFactory<V, M>::setUpHyperpriors(const M & Wy)
   // Starting index of the discrepancy precisions in the hyperparameter vector
   unsigned int discrepancyPrecisionIdx = (num_svd_terms<num_nonzero_eigenvalues) +
                                          num_svd_terms +
-                                         dimScenario +
-                                         dimParameter;
+                                         (dimScenario + dimParameter) * num_svd_terms;
 
   for (unsigned int disc_grp = 0; disc_grp < num_discrepancy_groups; disc_grp++) {
     // Min discrepancy precision
@@ -1766,9 +1773,12 @@ GPMSAFactory<V, M>::setUpHyperpriors(const M & Wy)
   }
 
   const int emulator_data_precision_index =
-    dimHyper - 1 - this->m_opts->m_calibrateObservationalPrecision;
-  (*(this->hyperparamMins))[emulator_data_precision_index] = 60.0;  // Min emulator data precision
-  (*(this->hyperparamMaxs))[emulator_data_precision_index] = 1e5;   // Max emulator data precision
+    dimHyper - num_svd_terms - this->m_opts->m_calibrateObservationalPrecision;
+  for (unsigned int emulator_basis = 0; emulator_basis < num_svd_terms;
+      emulator_basis++) {
+    (*(this->hyperparamMins))[emulator_data_precision_index+emulator_basis] = 60.0;  // Min emulator data precision
+    (*(this->hyperparamMaxs))[emulator_data_precision_index+emulator_basis] = 1e5;   // Max emulator data precision
+  }
 
   if (this->m_opts->m_calibrateObservationalPrecision) {
     (*(this->hyperparamMins))[dimHyper-1] = 0.3;      // Min observation error precision

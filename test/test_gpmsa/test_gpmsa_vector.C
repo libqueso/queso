@@ -310,18 +310,24 @@ int main(int argc, char ** argv) {
   // regression gold standard predates distributionMean()
   paramInitials[5]  = 0.4; // emulator precision
   paramInitials[6]  = 0.4; // weights0 precision
-  paramInitials[7]  = 0.97; // emulator corr str
-  paramInitials[8]  = 0.97; // emulator corr str
-  paramInitials[9] = 0.97; // emulator corr str
-  paramInitials[10] = 0.97; // emulator corr str
-  paramInitials[11] = 0.20; // emulator corr str
-  paramInitials[12] = 0.80; // emulator corr str
-  paramInitials[13] = 10.0; // discrepancy precision0
-  paramInitials[14] = 10.0; // discrepancy precision1
-  paramInitials[15] = 0.97; // discrepancy corr str0
-  paramInitials[16] = 0.97; // discrepancy corr str1
-  paramInitials[17] = 8000.0; // emulator data precision
-  paramInitials[18]  = 1.0;  // observation error precision
+  paramInitials[7]  = 0.97; // emulator corr str (first basis vector)
+  paramInitials[8]  = 0.97; // emulator corr str (first basis vector)
+  paramInitials[9]  = 0.97; // emulator corr str (first basis vector)
+  paramInitials[10] = 0.97; // emulator corr str (first basis vector)
+  paramInitials[11] = 0.20; // emulator corr str (first basis vector)
+  paramInitials[12] = 0.80; // emulator corr str (first basis vector)
+  paramInitials[13] = 0.97; // emulator corr str (second basis vector)
+  paramInitials[14] = 0.97; // emulator corr str (second basis vector)
+  paramInitials[15] = 0.97; // emulator corr str (second basis vector)
+  paramInitials[16] = 0.97; // emulator corr str (second basis vector)
+  paramInitials[17] = 0.20; // emulator corr str (second basis vector)
+  paramInitials[18] = 0.80; // emulator corr str (second basis vector)
+  paramInitials[19] = 10.0; // discrepancy precision0
+  paramInitials[20] = 10.0; // discrepancy precision1
+  paramInitials[21] = 0.97; // discrepancy corr str0
+  paramInitials[22] = 0.97; // discrepancy corr str1
+  paramInitials[23] = 8000.0; // emulator data precision
+  paramInitials[24]  = 1.0;  // observation error precision
 
   QUESO::GslMatrix proposalCovMatrix(
       gpmsaFactory.prior().imageSet().vectorSpace().zeroVector());
@@ -343,18 +349,24 @@ int main(int argc, char ** argv) {
   proposalCovMatrix(4, 4)   = 0.6719 / 10.0;  // param 5
   proposalCovMatrix(5, 5)   = 0.4953 / scale;  // emulator precision
   proposalCovMatrix(6, 6)   = 0.4953 / scale;  // weights0 precision
-  proposalCovMatrix(7, 7)   = 0.6058 / scale;  // emulator corr str
-  proposalCovMatrix(8, 8)   = 7.6032e-04 / scale;  // emulator corr str
-  proposalCovMatrix(9, 9) = 8.3815e-04 / scale;  // emulator corr str
-  proposalCovMatrix(10, 10) = 7.5412e-04 / scale;  // emulator corr str
-  proposalCovMatrix(11, 11) = 0.2682 / scale;  // emulator corr str
-  proposalCovMatrix(12, 12) = 0.0572 / scale;  // emulator corr str
-  proposalCovMatrix(13, 13) = 1.3417 / scale;  // discrepancy precision0
-  proposalCovMatrix(14, 14) = 1.3417 / scale;  // discrepancy precision1
-  proposalCovMatrix(15, 15) = 0.3461 / scale;  // discrepancy corr str0
-  proposalCovMatrix(16, 16) = 0.3461 / scale;  // discrepancy corr str1
-  proposalCovMatrix(17, 17) = 495.3 / scale;  // emulator data precision
-  proposalCovMatrix(18, 18) = 0.4953 / scale;  // observation error precision
+  proposalCovMatrix(7, 7)   = 0.6058 / scale;      // emulator corr str (1st basis vec)
+  proposalCovMatrix(8, 8)   = 7.6032e-04 / scale;  // emulator corr str (1st basis vec)
+  proposalCovMatrix(9, 9)   = 8.3815e-04 / scale;  // emulator corr str (1st basis vec)
+  proposalCovMatrix(10, 10) = 7.5412e-04 / scale;  // emulator corr str (1st basis vec)
+  proposalCovMatrix(11, 11) = 0.2682 / scale;      // emulator corr str (1st basis vec)
+  proposalCovMatrix(12, 12) = 0.0572 / scale;      // emulator corr str (1st basis vec)
+  proposalCovMatrix(13, 13) = 0.6058 / scale;      // emulator corr str (2nd basis vec)
+  proposalCovMatrix(14, 14) = 7.6032e-04 / scale;  // emulator corr str (2nd basis vec)
+  proposalCovMatrix(15, 15) = 8.3815e-04 / scale;  // emulator corr str (2nd basis vec)
+  proposalCovMatrix(16, 16) = 7.5412e-04 / scale;  // emulator corr str (2nd basis vec)
+  proposalCovMatrix(17, 17) = 0.2682 / scale;      // emulator corr str (2nd basis vec)
+  proposalCovMatrix(18, 18) = 0.0572 / scale;      // emulator corr str (2nd basis vec)
+  proposalCovMatrix(19, 19) = 1.3417 / scale;  // discrepancy precision0
+  proposalCovMatrix(20, 20) = 1.3417 / scale;  // discrepancy precision1
+  proposalCovMatrix(21, 21) = 0.3461 / scale;  // discrepancy corr str0
+  proposalCovMatrix(22, 22) = 0.3461 / scale;  // discrepancy corr str1
+  proposalCovMatrix(23, 23) = 495.3 / scale;  // emulator data precision
+  proposalCovMatrix(24, 24) = 0.4953 / scale;  // observation error precision
 
   // Square to get variances
   for (unsigned int i = 0; i < 15; i++) {

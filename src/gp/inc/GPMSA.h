@@ -489,6 +489,7 @@ public:
   typename ScopedPtr<BoxSubset<V, M> >::Type discrepancyCorrelationDomain;
 
   // Emulator data precision
+  typename ScopedPtr<VectorSpace<V, M> >::Type emulatorDataPrecisionSpace;
   typename ScopedPtr<V>::Type emulatorDataPrecisionMin;
   typename ScopedPtr<V>::Type emulatorDataPrecisionMax;
   typename ScopedPtr<BoxSubset<V, M> >::Type emulatorDataPrecisionDomain;
