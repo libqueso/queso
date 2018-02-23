@@ -327,14 +327,16 @@ TransformedScaledCovMatrixTKGroup<V, M>::transformCovMatrixToGaussianSpace(
     double max_val = max_domain_bounds[i];
 
     if (queso_isfinite(min_val) && queso_isfinite(max_val)) {
-      if (covMatrix(i, i) >= max_val - min_val) {
+      if (std::sqrt(covMatrix(i, i)) >= max_val - min_val) {
         // User is trying to specify a uniform proposal distribution, which
         // is unsupported.  Throw an error for now.
         std::cerr << "Proposal variance element "
                   << i
                   << " is "
                   << covMatrix(i, i)
-                  << " but domain is of size "
+		  << " (standard deviation is "
+		  << std::sqrt(covMatrix(i, i))
+                  << ") but domain is of size "
                   << max_val - min_val
                   << std::endl;
         std::cerr << "QUESO does not support uniform-like proposal "
