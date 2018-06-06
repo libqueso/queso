@@ -1,7 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$a00046.html" title="This base class allows the representation of a transition kernel. " alt="" coords="5,103,165,145"/>
-<area shape="rect" id="node2" href="$a00127.html" title="This class allows the representation of a transition kernel with Hessians. " alt="" coords="229,5,429,46"/>
-<area shape="rect" id="node3" href="$a00166.html" title="This class allows the representation of the MALA transition kernel with a scaled covariance matrix fo..." alt="" coords="235,70,424,111"/>
-<area shape="rect" id="node4" href="$a00205.html" title="This class allows the representation of a transition kernel with a scaled covariance matrix..." alt="" coords="214,135,445,177"/>
-<area shape="rect" id="node5" href="$a00234.html" title="This class represents a transition kernel with a scaled covariance matrix on hybrid bounded/unbounded..." alt="" coords="234,201,425,242"/>
-</map>

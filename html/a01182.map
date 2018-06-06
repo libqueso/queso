@@ -1,7 +1,0 @@
-<map id="QUESO::McOptionsValues" name="QUESO::McOptionsValues">
-<area shape="rect" id="node2" href="$a00063.html" title="QUESO::BoostInputOptions\lParser" alt="" coords="416,57,603,98"/>
-<area shape="rect" id="node3" href="$a00037.html" title="QUESO::BaseInputOptionsParser" alt="" coords="11,5,231,32"/>
-<area shape="rect" id="node4" href="$a00206.html" title="QUESO::ScopedPtr\&lt; boost\l::program_options::variables_map \&gt;" alt="" coords="6,57,237,98"/>
-<area shape="rect" id="node5" href="$a00206.html" title="QUESO::ScopedPtr\&lt; boost\l::program_options::options\l_description \&gt;" alt="" coords="30,123,213,179"/>
-<area shape="rect" id="node6" href="$a00215.html" title="A templated class that stores default statistical options for a sequence of vectors, e.g. a Markov chain, a Monte Carlo input sequence, or a Monte Carlo output sequence. " alt="" coords="448,124,571,151"/>
-</map>

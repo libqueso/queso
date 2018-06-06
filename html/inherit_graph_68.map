@@ -1,5 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$a00082.html" title="QUESO::Factory\&lt; Algorithm\l\&lt; GslVector, GslMatrix \&gt; \&gt;" alt="" coords="5,5,195,46"/>
-<area shape="rect" id="node2" href="$a00011.html" title="QUESO::AlgorithmFactory" alt="" coords="243,12,421,39"/>
-<area shape="rect" id="node3" href="$a00012.html" title="QUESO::AlgorithmFactoryImp\l\&lt; DerivedAlgorithm \&gt;" alt="" coords="470,5,669,46"/>
-</map>

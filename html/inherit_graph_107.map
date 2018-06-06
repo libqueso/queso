@@ -1,6 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$a00190.html" title="Class for random number generation (base class for either GSL or Boost RNG). " alt="" coords="6,56,138,83"/>
-<area shape="rect" id="node2" href="$a00191.html" title="QUESO::RngBoost" alt="" coords="191,5,327,32"/>
-<area shape="rect" id="node3" href="$a00193.html" title="QUESO::RngCXX11" alt="" coords="187,56,331,83"/>
-<area shape="rect" id="node4" href="$a00195.html" title="QUESO::RngGsl" alt="" coords="197,107,320,133"/>
-</map>
