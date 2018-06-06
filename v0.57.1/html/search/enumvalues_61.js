@@ -1,0 +1,21 @@
+var searchData=
+[
+  ['ann_5fbd_5fcentroid',['ANN_BD_CENTROID',['../a00298.html#a6efa97da21b6bc41db3ce4cfbfbe9c8ca337cef9db4d4b9d7184c912bb5802a9a',1,'ANN.h']]],
+  ['ann_5fbd_5fnone',['ANN_BD_NONE',['../a00298.html#a6efa97da21b6bc41db3ce4cfbfbe9c8ca00e2c3dae33e7a522c5f5265d1ce67e5',1,'ANN.h']]],
+  ['ann_5fbd_5fsimple',['ANN_BD_SIMPLE',['../a00298.html#a6efa97da21b6bc41db3ce4cfbfbe9c8ca9b85530cb7c0f2afd844dd298239beca',1,'ANN.h']]],
+  ['ann_5fbd_5fsuggest',['ANN_BD_SUGGEST',['../a00298.html#a6efa97da21b6bc41db3ce4cfbfbe9c8caf9599a9dddddb636d4fb525dc14751bc',1,'ANN.h']]],
+  ['ann_5fhi',['ANN_HI',['../a00300.html#a06fc87d81c62e9abb8790b6e5713c55baec74667bc912e4db7f65f6a85e6e9c49',1,'ANNx.h']]],
+  ['ann_5fin',['ANN_IN',['../a00300.html#adf764cbdea00d65edcd07bb9953ad2b7a0d2aaac2cc3bb72be73ecfa346e35fa9',1,'ANNx.h']]],
+  ['ann_5fkd_5ffair',['ANN_KD_FAIR',['../a00298.html#a229eef95deefadc9d3fa738683c9c2bba120e2bf3c00d785a8deeaa911aa0762d',1,'ANN.h']]],
+  ['ann_5fkd_5fmidpt',['ANN_KD_MIDPT',['../a00298.html#a229eef95deefadc9d3fa738683c9c2bba269ec3c64e6a211889803403e3db8c08',1,'ANN.h']]],
+  ['ann_5fkd_5fsl_5ffair',['ANN_KD_SL_FAIR',['../a00298.html#a229eef95deefadc9d3fa738683c9c2bba55cf23b5fd13fc8ca54d1e3c4a04d0fb',1,'ANN.h']]],
+  ['ann_5fkd_5fsl_5fmidpt',['ANN_KD_SL_MIDPT',['../a00298.html#a229eef95deefadc9d3fa738683c9c2bbac8e375f7efb04af5ff833dac2095bc50',1,'ANN.h']]],
+  ['ann_5fkd_5fstd',['ANN_KD_STD',['../a00298.html#a229eef95deefadc9d3fa738683c9c2bba33c8110b750dedbe3e585bfe1371b35f',1,'ANN.h']]],
+  ['ann_5fkd_5fsuggest',['ANN_KD_SUGGEST',['../a00298.html#a229eef95deefadc9d3fa738683c9c2bba9998b60fada03ec8867d9ee448ac4ea7',1,'ANN.h']]],
+  ['ann_5flo',['ANN_LO',['../a00300.html#a06fc87d81c62e9abb8790b6e5713c55baa8cdd7f0b9fb9ae3d138d13815c57d6e',1,'ANNx.h']]],
+  ['ann_5fout',['ANN_OUT',['../a00300.html#adf764cbdea00d65edcd07bb9953ad2b7a74d342c79fc6125d2b51326d62ce597c',1,'ANNx.h']]],
+  ['annabort',['ANNabort',['../a00300.html#a13bdbb0af13b1a99636a383f628469d4ac74a434b098f1c98aa9c2fbdd2e93524',1,'ANNx.h']]],
+  ['annfalse',['ANNfalse',['../a00298.html#ae5927710e8251aa54f5b820eca160f2ca51606fdd5e5305332f7c95a60e00d474',1,'ANN.h']]],
+  ['anntrue',['ANNtrue',['../a00298.html#ae5927710e8251aa54f5b820eca160f2ca41d4356309b10c4c058247f6edc276c1',1,'ANN.h']]],
+  ['annwarn',['ANNwarn',['../a00300.html#a13bdbb0af13b1a99636a383f628469d4a894429235656d13f3ba0c0285c74aeb7',1,'ANNx.h']]]
+];
