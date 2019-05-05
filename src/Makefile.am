@@ -302,6 +302,7 @@ libqueso_la_SOURCES += gp/src/TensorProductMesh.C
 # Sources from experimental_design/src
 libqueso_la_SOURCES += experimental_design/src/GridSearchExperimentalDesign.C
 libqueso_la_SOURCES += experimental_design/src/ExperimentMetricEIG.C
+libqueso_la_SOURCES += experimental_design/src/ExperimentMetricMinVariance.C
 libqueso_la_SOURCES += experimental_design/src/ScenarioRunner.C
 libqueso_la_SOURCES += experimental_design/src/ExperimentalLikelihoodInterface.C
 libqueso_la_SOURCES += experimental_design/src/ExperimentalLikelihoodWrapper.C
@@ -521,6 +522,7 @@ libqueso_include_HEADERS += gp/inc/TensorProductMesh.h
 libqueso_include_HEADERS += experimental_design/inc/GridSearchExperimentalDesign.h
 libqueso_include_HEADERS += experimental_design/inc/ExperimentMetricBase.h
 libqueso_include_HEADERS += experimental_design/inc/ExperimentMetricEIG.h
+libqueso_include_HEADERS += experimental_design/inc/ExperimentMetricMinVariance.h
 libqueso_include_HEADERS += experimental_design/inc/ExperimentalLikelihoodInterface.h
 libqueso_include_HEADERS += experimental_design/inc/ExperimentalLikelihoodWrapper.h
 libqueso_include_HEADERS += experimental_design/inc/ScenarioRunner.h

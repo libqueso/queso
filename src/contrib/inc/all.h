@@ -107,6 +107,7 @@
 #include<queso/GridSearchExperimentalDesign.h>
 #include<queso/ScenarioRunner.h>
 #include<queso/ExperimentMetricEIG.h>
+#include<queso/ExperimentMetricMinVariance.h>
 #include<queso/GaussianVectorRV.h>
 #include<queso/MetropolisAdjustedLangevinTK.h>
 #include<queso/GaussianVectorCdf.h>

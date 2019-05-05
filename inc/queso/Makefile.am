@@ -83,6 +83,7 @@ BUILT_SOURCES += exceptions.h
 BUILT_SOURCES += queso.h
 BUILT_SOURCES += ExperimentMetricBase.h
 BUILT_SOURCES += ExperimentMetricEIG.h
+BUILT_SOURCES += ExperimentMetricMinVariance.h
 BUILT_SOURCES += ExperimentalLikelihoodInterface.h
 BUILT_SOURCES += ExperimentalLikelihoodWrapper.h
 BUILT_SOURCES += GridSearchExperimentalDesign.h
@@ -367,6 +368,8 @@ queso.h: $(top_srcdir)/src/core/inc/queso.h
 ExperimentMetricBase.h: $(top_srcdir)/src/experimental_design/inc/ExperimentMetricBase.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 ExperimentMetricEIG.h: $(top_srcdir)/src/experimental_design/inc/ExperimentMetricEIG.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+ExperimentMetricMinVariance.h: $(top_srcdir)/src/experimental_design/inc/ExperimentMetricMinVariance.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 ExperimentalLikelihoodInterface.h: $(top_srcdir)/src/experimental_design/inc/ExperimentalLikelihoodInterface.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
