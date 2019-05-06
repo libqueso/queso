@@ -32,6 +32,8 @@
 
 // C++
 #include <sstream>
+#include <vector>
+#include <cmath>
 
 namespace QUESO
 {
@@ -40,6 +42,22 @@ namespace QUESO
     : SurrogateBase<V>(),
     m_data(data)
     {}
+
+  template<class V, class M>
+  void InterpolationSurrogateBase<V,M>::verify_bounds(const V & domainVector) const
+  {
+    for (unsigned int i=0; i<domainVector.sizeGlobal(); ++i)
+      {
+        if ( (std::isnan(domainVector[i])) || (domainVector[i] > this->m_data.x_max(i)) || (domainVector[i] < this->m_data.x_min(i)) )
+          {
+            std::stringstream ss;
+            ss  <<"ERROR: Cannot evaluate surrogate outside bounds for parameter " <<i
+                <<", value requested: " <<domainVector[i] <<std::endl;
+
+            queso_error_msg(ss.str());
+          }
+      }
+  }
 
 } // end namespace QUESO
 
