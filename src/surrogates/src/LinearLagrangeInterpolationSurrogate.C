@@ -41,6 +41,9 @@ namespace QUESO
   template<class V, class M>
   double LinearLagrangeInterpolationSurrogate<V,M>::evaluate(const V & domainVector) const
   {
+    // Verify that the requested evaluation point is within the data bounds
+    this->verify_bounds(domainVector);
+
     /* Populate indices. These are the lower bound global indices for the
        "element" containing the domainVector */
     std::vector<unsigned int> indices(this->m_data.dim());
