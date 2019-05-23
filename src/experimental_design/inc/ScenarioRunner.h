@@ -51,22 +51,32 @@ namespace QUESO
                     std::shared_ptr<ExperimentMetricBase<V,M>> & metric)
     : m_prior(prior),
       m_wrapper(wrapper),
-      m_experiment_metric(metric) {}
+      m_experiment_metric(metric),
+      m_output_rawchain(false),
+      m_output_type("") {}
 
     //! Passes the scenario parameters to the likelihood function,
     //! creates and runs a SIP object, and sets the m_exp_metric_value
     //! based on the provided experiment metric
-    void runExperiment(std::vector<double> & scenario_params);
+    void runExperiment(std::vector<double> & scenario_params, std::string & filename);
 
     double getExperimentMetricValue()
     {
       return m_exp_metric_value;
     }
 
+    void set_output_rawchain(std::string type)
+    {
+      this->m_output_rawchain = true;
+      this->m_output_type     = type;
+    }
+
   protected:
     std::shared_ptr<BaseVectorRV<V,M>> m_prior;
     std::shared_ptr<ExperimentalLikelihoodWrapper<V,M>> m_wrapper;
     std::shared_ptr<ExperimentMetricBase<V,M>> m_experiment_metric;
+    bool m_output_rawchain;
+    std::string m_output_type;
 
     // The "value" of the given scenario based on the provided experiment metric
     double m_exp_metric_value;

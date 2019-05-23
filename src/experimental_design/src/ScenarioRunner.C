@@ -38,7 +38,7 @@
 namespace QUESO
 {
   template<class V, class M>
-  void ScenarioRunner<V,M>::runExperiment(std::vector<double> & scenario_params)
+  void ScenarioRunner<V,M>::runExperiment(std::vector<double> & scenario_params, std::string & filename)
   {
     m_wrapper->reinit(scenario_params);
 
@@ -50,6 +50,12 @@ namespace QUESO
                                               post);
     
     m_experiment_metric->run(sip);
+
+    if (m_output_rawchain)
+      {
+        queso_assert_not_equal_to_msg(filename,"","ERROR, you must provide a prefix to output the rawchain file");
+        sip.chain().unifiedWriteContents(filename,m_output_type);
+      }
 
     m_exp_metric_value = m_experiment_metric->evaluate(sip);
   }

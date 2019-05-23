@@ -43,19 +43,19 @@ namespace QUESO
     m_scenario_runner(runner)
   {
     unsigned int n_param = m_scenario_domain.vectorSpace().dimGlobal();
-    
+
     queso_assert_equal_to(n_param,n_points.size());
 
     unsigned int total_points = 1;
     for (unsigned int d = 0; d < n_param; ++d)
       total_points *= m_n_points[d];
-    
+
     m_total_scenarios = total_points;
   }
 
 
   template<class V, class M>
-  void GridSearchExperimentalDesign<V,M>::run(V & experimental_params)
+  void GridSearchExperimentalDesign<V,M>::run(V & experimental_params, std::string & filename_prefix)
   {
 
     // don't need to store all the metric values,
@@ -66,13 +66,42 @@ namespace QUESO
     for (unsigned int n = 0; n < m_total_scenarios; ++n)
       {
         std::vector<double> scenario(this->get_n_params());
-        
+
         this->get_params_from_global_coord(n,scenario);
-        
-        m_scenario_runner->runExperiment(scenario);
-        
+
+        if (this->m_scenario_domain.env().fullRank() == 0)
+          {
+            std::stringstream ss;
+            ss <<"\n-------------------------------\n"
+                <<"Running scenario " <<n <<std::endl
+                <<"Parameters: ";
+            for (unsigned int s = 0; s < (this->get_n_params()-1); ++s)
+              ss <<scenario[s] <<",";
+
+            ss  <<scenario[this->get_n_params()-1]
+                <<"\n-------------------------------\n";
+
+            std::cout <<ss.str();
+          }
+
+        std::string filename = "";
+        if (filename_prefix != "")
+          filename = "posterior_"+filename_prefix+"_"+std::to_string(n);
+
+        m_scenario_runner->runExperiment(scenario,filename);
+
         double value = m_scenario_runner->getExperimentMetricValue();
-        
+
+        if (this->m_scenario_domain.env().fullRank() == 0)
+          {
+            std::stringstream ss1;
+            ss1 <<"-------------------------------\n"
+                <<"Scenario " <<n <<" metric: " <<value
+                <<"\n-------------------------------\n";
+
+            std::cout <<ss1.str();
+          }
+
         // check if n==0 because we always want to set max_value on the first iteration
         if ( (value > max_value) || (n == 0) )
           {
@@ -106,7 +135,6 @@ namespace QUESO
   }
 
 }
-
 
 template class QUESO::GridSearchExperimentalDesign<QUESO::GslVector,QUESO::GslMatrix>;
 

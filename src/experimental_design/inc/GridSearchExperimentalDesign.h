@@ -41,13 +41,13 @@ namespace QUESO
   public:
 
     GridSearchExperimentalDesign( const BoxSubset<V,M> & scenario_domain,
-                                std::vector<unsigned int> & n_points,
-                                std::shared_ptr<ScenarioRunner<V,M>> & runner);
+                                  std::vector<unsigned int> & n_points,
+                                  std::shared_ptr<ScenarioRunner<V,M>> & runner);
 
     //! Iterate over all possible experimental scenarios and calculate a metric for each.
     //!
     //! @return The scenario parameter values of the experiment with the highest metric value
-    void run(V & experimental_params);
+    void run(V & experimental_params, std::string & filename_prefix);
 
     GridSearchExperimentalDesign() = delete;
 
