@@ -81,6 +81,12 @@ BUILT_SOURCES += Vector.h
 BUILT_SOURCES += asserts.h
 BUILT_SOURCES += exceptions.h
 BUILT_SOURCES += queso.h
+BUILT_SOURCES += ExperimentMetricBase.h
+BUILT_SOURCES += ExperimentMetricEIG.h
+BUILT_SOURCES += ExperimentalLikelihoodInterface.h
+BUILT_SOURCES += ExperimentalLikelihoodWrapper.h
+BUILT_SOURCES += GridSearchExperimentalDesign.h
+BUILT_SOURCES += ScenarioRunner.h
 BUILT_SOURCES += GPMSA.h
 BUILT_SOURCES += GPMSAOptions.h
 BUILT_SOURCES += SimulationOutputMesh.h
@@ -357,6 +363,18 @@ asserts.h: $(top_srcdir)/src/core/inc/asserts.h
 exceptions.h: $(top_srcdir)/src/core/inc/exceptions.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 queso.h: $(top_srcdir)/src/core/inc/queso.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+ExperimentMetricBase.h: $(top_srcdir)/src/experimental_design/inc/ExperimentMetricBase.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+ExperimentMetricEIG.h: $(top_srcdir)/src/experimental_design/inc/ExperimentMetricEIG.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+ExperimentalLikelihoodInterface.h: $(top_srcdir)/src/experimental_design/inc/ExperimentalLikelihoodInterface.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+ExperimentalLikelihoodWrapper.h: $(top_srcdir)/src/experimental_design/inc/ExperimentalLikelihoodWrapper.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+GridSearchExperimentalDesign.h: $(top_srcdir)/src/experimental_design/inc/GridSearchExperimentalDesign.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+ScenarioRunner.h: $(top_srcdir)/src/experimental_design/inc/ScenarioRunner.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GPMSA.h: $(top_srcdir)/src/gp/inc/GPMSA.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@

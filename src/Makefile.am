@@ -299,6 +299,13 @@ libqueso_la_SOURCES += gp/src/GPMSAOptions.C
 libqueso_la_SOURCES += gp/src/SimulationOutputMesh.C
 libqueso_la_SOURCES += gp/src/TensorProductMesh.C
 
+# Sources from experimental_design/src
+libqueso_la_SOURCES += experimental_design/src/GridSearchExperimentalDesign.C
+libqueso_la_SOURCES += experimental_design/src/ExperimentMetricEIG.C
+libqueso_la_SOURCES += experimental_design/src/ScenarioRunner.C
+libqueso_la_SOURCES += experimental_design/src/ExperimentalLikelihoodInterface.C
+libqueso_la_SOURCES += experimental_design/src/ExperimentalLikelihoodWrapper.C
+
 # Headers to install from core/inc
 
 libqueso_include_HEADERS =
@@ -509,6 +516,14 @@ libqueso_include_HEADERS += gp/inc/GPMSAOptions.h
 libqueso_include_HEADERS += gp/inc/SimulationOutputMesh.h
 libqueso_include_HEADERS += gp/inc/SimulationOutputPoint.h
 libqueso_include_HEADERS += gp/inc/TensorProductMesh.h
+
+# Headers to install from experimental_design/inc
+libqueso_include_HEADERS += experimental_design/inc/GridSearchExperimentalDesign.h
+libqueso_include_HEADERS += experimental_design/inc/ExperimentMetricBase.h
+libqueso_include_HEADERS += experimental_design/inc/ExperimentMetricEIG.h
+libqueso_include_HEADERS += experimental_design/inc/ExperimentalLikelihoodInterface.h
+libqueso_include_HEADERS += experimental_design/inc/ExperimentalLikelihoodWrapper.h
+libqueso_include_HEADERS += experimental_design/inc/ScenarioRunner.h
 
 # Install the magic header
 libqueso_include_HEADERS += contrib/inc/all.h
