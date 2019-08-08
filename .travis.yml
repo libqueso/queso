@@ -22,4 +22,4 @@ script:
   - make lcov-report
   - make -j4 distcheck
 after_success:
-    - bash <(curl -s https://codecov.io/bash)
+  - bash <(curl -s https://raw.githubusercontent.com/codecov/codecov-bash/0b376529f626b50b7d4a9fb734e0e50d28b9b91e/codecov)
