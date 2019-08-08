@@ -48,8 +48,9 @@
 #include <libmesh/dirichlet_boundaries.h>
 #include <libmesh/utility.h>
 #include <libmesh/string_to_enum.h>
-#include <libmesh/enum_order.h>
+#include <libmesh/enum_eigen_solver_type.h>
 #include <libmesh/enum_fe_family.h>
+#include <libmesh/enum_order.h>
 
 namespace QUESO {
 
@@ -68,8 +69,8 @@ LibMeshNegativeLaplacianOperator::LibMeshNegativeLaplacianOperator(
   // Adds the variable "u" to "Eigensystem".   "u"
   // will be approximated using second-order approximation.
   unsigned int u_var = eigen_system.add_variable("u",
-      libMesh::Utility::string_to_enum<libMeshEnums::Order>(this->builder.order),
-      libMesh::Utility::string_to_enum<libMeshEnums::FEFamily>(this->builder.family));
+      libMesh::Utility::string_to_enum<libMesh::Order>(this->builder.order),
+      libMesh::Utility::string_to_enum<libMesh::FEFamily>(this->builder.family));
 
   // This works because *this is a subclass of System::Assembly
   // and requires the class to implement an 'assemble'
@@ -89,12 +90,12 @@ LibMeshNegativeLaplacianOperator::LibMeshNegativeLaplacianOperator(
 
   // Set the type of the problem, here we deal with
   // a generalized Hermitian problem.
-  eigen_system.set_eigenproblem_type(libMeshEnums::GHEP);
+  eigen_system.set_eigenproblem_type(libMesh::GHEP);
 
   // Order the eigenvalues "smallest first"
   // This hoses performance?
   eigen_system.eigen_solver->set_position_of_spectrum
-    (libMeshEnums::SMALLEST_MAGNITUDE);
+    (libMesh::SMALLEST_MAGNITUDE);
 
   // Set up the boundary (only works if this->m is a square)
   // We'll just the whole boundary to be Dirichlet, because why not

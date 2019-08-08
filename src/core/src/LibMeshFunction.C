@@ -58,6 +58,7 @@
 #include <libmesh/string_to_enum.h>
 #include <libmesh/enum_order.h>
 #include <libmesh/enum_fe_family.h>
+#include <libmesh/enum_norm_type.h>
 
 namespace QUESO {
 
@@ -69,8 +70,8 @@ LibMeshFunction::LibMeshFunction(
 {
   this->equation_systems->add_system<libMesh::ExplicitSystem>("Function");
   this->equation_systems->get_system("Function").add_variable("u",
-      libMesh::Utility::string_to_enum<libMeshEnums::Order>(this->builder.order),
-      libMesh::Utility::string_to_enum<libMeshEnums::FEFamily>(this->builder.family));
+      libMesh::Utility::string_to_enum<libMesh::Order>(this->builder.order),
+      libMesh::Utility::string_to_enum<libMesh::FEFamily>(this->builder.family));
   this->equation_systems->init();
 }
 
@@ -131,7 +132,7 @@ double LibMeshFunction::L2_norm() const {
     this->equation_systems->get_system<libMesh::ExplicitSystem>("Function");
 
   double norm = system.calculate_norm(*system.solution,
-                                      libMesh::SystemNorm(libMeshEnums::L2));
+                                      libMesh::SystemNorm(libMesh::L2));
   return norm;
 }
 
