@@ -16,6 +16,7 @@
 #include <libmesh/elem.h>
 #include <libmesh/dof_map.h>
 #include <libmesh/system_norm.h>
+#include <libmesh/enum_norm_type.h>
 #include <queso/EnvironmentOptions.h>
 #include <queso/FunctionOperatorBuilder.h>
 #include <queso/LibMeshFunction.h>
@@ -53,7 +54,7 @@ int main(int argc, char **argv)
 
   libMesh::Mesh mesh(init.comm());
   libMesh::MeshTools::Generation::build_square(mesh,
-      20, 20, 0.0, 1.0, 0.0, 1.0, libMeshEnums::QUAD4);
+      20, 20, 0.0, 1.0, 0.0, 1.0, libMesh::QUAD4);
 
   QUESO::FunctionOperatorBuilder builder;
 
@@ -72,7 +73,7 @@ int main(int argc, char **argv)
   for (i = 0; i < builder.num_req_eigenpairs; i++) {
     eig_sys.get_eigenpair(i);
     norms[i] = eig_sys.calculate_norm(*eig_sys.solution,
-                                      libMesh::SystemNorm(libMeshEnums::L2));
+                                      libMesh::SystemNorm(libMesh::L2));
     if (abs(norms[i] - 1.0) > TEST_TOL) {
       return 1;
     }
@@ -82,7 +83,7 @@ int main(int argc, char **argv)
   const libMesh::DofMap & dof_map = eig_sys.get_dof_map();
   libMesh::FEType fe_type = dof_map.variable_type(0);
   libMesh::UniquePtr<libMesh::FEBase> fe(libMesh::FEBase::build(dim, fe_type));
-  libMesh::QGauss qrule(dim, libMeshEnums::FIFTH);
+  libMesh::QGauss qrule(dim, libMesh::FIFTH);
   fe->attach_quadrature_rule(&qrule);
   const std::vector<libMesh::Real> & JxW = fe->get_JxW();
   const std::vector<std::vector<libMesh::Real> >& phi = fe->get_phi();
