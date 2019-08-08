@@ -1,0 +1,18 @@
+###############################################
+# UQ Environment
+###############################################
+#env_help                = anything
+env_numSubEnvironments   = 1
+#env_subDisplayFileName   = outputData/display
+env_subDisplayAllowAll   = 0
+env_subDisplayAllowedSet = 0 1
+env_displayVerbosity     = 2
+env_syncVerbosity        = 0
+
+# Force gsl to prevent regression failures with other rngs
+env_rngType              = gsl
+env_seed                 = -1
+
+# Metropolis-Hastings raw chain size
+ip_mh_rawChain_size      = 100000
+

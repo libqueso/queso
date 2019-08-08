@@ -551,6 +551,22 @@ dist_custom_tk_DATA =
 dist_custom_tk_DATA += ${hessian_eg_SOURCES}
 dist_custom_tk_DATA += ${hessian_eg_HEADERS}
 
+#####################
+# Discrete Experimental Design #
+#####################
+expdesigndir = $(prefix)/examples/discreteExperimentalDesign
+
+expdesign_PROGRAMS = discrete_experimental_design
+
+discrete_experimental_design_SOURCES = discreteExperimentalDesign/discrete_experimental_design.C
+discrete_experimental_design_LDADD = $(top_builddir)/src/libqueso.la
+discrete_experimental_design_CPPFLAGS = $(AM_CPPFLAGS)
+
+dist_expdesign_DATA =
+dist_expdesign_DATA += ${discrete_experimental_design_SOURCES}
+dist_expdesign_DATA += discreteExperimentalDesign/queso.in
+
+
 
 if CODE_COVERAGE_ENABLED
   CLEANFILES = *.gcda *.gcno
